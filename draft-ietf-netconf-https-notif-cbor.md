@@ -3,7 +3,7 @@ title: "CBOR Encoding for HTTPS-based YANG Notifications Transport"
 abbrev: "https-notif-cbor"
 category: std
 
-docname: draft-chittapragada-netconf-https-notif-cbor-latest
+docname: draft-ietf-netconf-https-notif-cbor-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
@@ -21,8 +21,8 @@ venue:
   type: ""
   mail: "netconf@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/netconf/"
-  github: "MeherRushi/draft-chittapragada-netconf-https-notif-cbor"
-  latest: "https://MeherRushi.github.io/draft-chittapragada-netconf-https-notif-cbor/draft-chittapragada-netconf-https-notif-cbor.html"
+  github: "MeherRushi/draft-ietf-netconf-https-notif-cbor"
+  latest: "https://MeherRushi.github.io/draft-ietf-netconf-https-notif-cbor/draft-ietf-netconf-https-notif-cbor.html"
 
 author:
   - name: Bharadwaja Meherrushi Chittapragada
@@ -372,7 +372,7 @@ This section records the status of known implementations of the specification de
 
 
 - *Version Compatibility*:
-  The implementation is based on  draft-ietf-netconf-https-notif-15 and draft-chittapragada-netconf-https-notif-cbor-03.
+  The implementation is based on  draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.
 
 - *Licensing*:
   Freely distributable under an MIT-style license.
