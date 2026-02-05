@@ -5,14 +5,14 @@
 Network Configuration                                B. M. Chittapragada
 Internet-Draft                                                   S. Bhat
 Intended status: Standards Track                               V. T. Rao
-Expires: 6 May 2026                                            H. Arshad
+Expires: 9 August 2026                                         H. Arshad
                                                          M. P. Tahiliani
                    National Institute of Technology Karnataka, Surathkal
-                                                         2 November 2025
+                                                         5 February 2026
 
 
        CBOR Encoding for HTTPS-based YANG Notifications Transport
-          draft-chittapragada-netconf-https-notif-cbor-latest
+               draft-ietf-netconf-https-notif-cbor-latest
 
 Abstract
 
@@ -25,11 +25,10 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://MeherRushi.github.io/draft-chittapragada-netconf-https-notif-
-   cbor/draft-chittapragada-netconf-https-notif-cbor.html.  Status
-   information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-chittapragada-netconf-https-
-   notif-cbor/.
+   https://MeherRushi.github.io/draft-ietf-netconf-https-notif-cbor/
+   draft-ietf-netconf-https-notif-cbor.html.  Status information for
+   this document may be found at https://datatracker.ietf.org/doc/draft-
+   ietf-netconf-https-notif-cbor/.
 
    Discussion of this document takes place on the Network Configuration
    mailing list (mailto:netconf@ietf.org), which is archived at
@@ -37,8 +36,7 @@ About This Document
    https://www.ietf.org/mailman/listinfo/netconf/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/MeherRushi/draft-chittapragada-netconf-https-
-   notif-cbor.
+   https://github.com/MeherRushi/draft-ietf-netconf-https-notif-cbor.
 
 Status of This Memo
 
@@ -55,11 +53,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 May 2026.
+   This Internet-Draft will expire on 9 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -416,8 +414,8 @@ A1                                      # map(1)
          document
 
    *  _Version Compatibility_: The implementation is based on draft-
-      ietf-netconf-https-notif-15 and draft-chittapragada-netconf-https-
-      notif-cbor-03.
+      ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-
+      cbor-00.
 
    *  _Licensing_: Freely distributable under an MIT-style license.
 
