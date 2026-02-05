@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>CBOR Encoding for HTTPS-based YANG Notifications Transport</title>
+<meta content="Bharadwaja Meherrushi Chittapragada" name="author">
+<meta content="Siddharth Bhat" name="author">
+<meta content="Vartika T Rao" name="author">
+<meta content="Hayyan Arshad" name="author">
+<meta content="Mohit P. Tahiliani" name="author">
+<meta content="
+       This document extends   by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes. 
+    " name="description">
+<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="cbor" name="keyword">
+<meta content="https" name="keyword">
+<meta content="yang" name="keyword">
+<meta content="draft-ietf-netconf-https-notif-cbor-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.31.0
+    Python 3.12.12
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.2.1
+    Jinja2 3.1.6
+    lxml 6.0.2
+    platformdirs 4.5.1
+    pycountry 24.6.1
+    PyYAML 6.0.3
+    requests 2.32.5
+    wcwidth 0.3.0
+-->
+<link href="draft-ietf-netconf-https-notif-cbor.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+    }
+  }
+  &.olPercent > dt {
+    float: none;
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+}
+dl:not(.dlNewline) > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+}
+@media not print {
+  :hover > a.pilcrow, a.pilcrow:focus {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* Comments */
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc nav {
+    font-family: var(--font-title);
+    font-weight: 360;
+    & > ul { margin-bottom: 2em; }
+    & ul {
+      margin: 0 0 0 4px;
+      & :is(p, li) {
+        margin: 2px 0;
+      }
+    }
+  }
+  #toc a.toplink {
+    float: right;
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    &::before { /* css hamburger */
+      float: right;
+      position: relative;
+      width: 1em;
+      height: 1px;
+      left: -164px;
+      margin: 8px 0 0 0;
+      background: white none repeat scroll 0 0;
+      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+      content: "";
+    }
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active {
+    opacity: 1;
+    & nav { display: block; }
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:is(:link, :focus, :hover),
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin: 2px 0.5em 0;
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+  #toc a.toplink {
+    margin: 8px 0.5em 0;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">https-notif-cbor</td>
+<td class="right">February 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Chittapragada, et al.</td>
+<td class="center">Expires 9 August 2026</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Configuration</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-netconf-https-notif-cbor-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-02-05" class="published">5 February 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2026-08-09">9 August 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">B. M. Chittapragada</div>
+<div class="org">National Institute of Technology Karnataka, Surathkal</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Bhat</div>
+<div class="org">National Institute of Technology Karnataka, Surathkal</div>
+</div>
+<div class="author">
+      <div class="author-name">V. T. Rao</div>
+<div class="org">National Institute of Technology Karnataka, Surathkal</div>
+</div>
+<div class="author">
+      <div class="author-name">H. Arshad</div>
+<div class="org">National Institute of Technology Karnataka, Surathkal</div>
+</div>
+<div class="author">
+      <div class="author-name">M. P. Tahiliani</div>
+<div class="org">National Institute of Technology Karnataka, Surathkal</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">CBOR Encoding for HTTPS-based YANG Notifications Transport</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document extends <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://MeherRushi.github.io/draft-ietf-netconf-https-notif-cbor/draft-ietf-netconf-https-notif-cbor.html">https://MeherRushi.github.io/draft-ietf-netconf-https-notif-cbor/draft-ietf-netconf-https-notif-cbor.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-ietf-netconf-https-notif-cbor/">https://datatracker.ietf.org/doc/draft-ietf-netconf-https-notif-cbor/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        Network Configuration  mailing list (<span><a href="mailto:netconf@ietf.org">mailto:netconf@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/netconf/">https://mailarchive.ietf.org/arch/browse/netconf/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/netconf/">https://www.ietf.org/mailman/listinfo/netconf/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/MeherRushi/draft-ietf-netconf-https-notif-cbor">https://github.com/MeherRushi/draft-ietf-netconf-https-notif-cbor</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 9 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cbor-encoding-of-the-notifi" class="internal xref">CBOR Encoding of the notification(s)</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-capabilities-request" class="internal xref">Capabilities Request</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-capabilities-response" class="internal xref">Capabilities Response</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-cbor-using-names-as-keys" class="internal xref">CBOR using names as keys</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-cbor-using-names-as-keys-2" class="internal xref">CBOR using names as keys</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-relay-notification-request" class="internal xref">Relay Notification request</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="auto internal xref">3.3.1</a>.  <a href="#name-cbor-encoding-using-names-a" class="internal xref">CBOR encoding using names as keys</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.2">
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="auto internal xref">3.3.2</a>.  <a href="#name-cbor-encoding-using-sids-as" class="internal xref">CBOR encoding using SIDs as keys</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-relay-notification-response" class="internal xref">Relay Notification Response</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-implementation-https-notifi" class="internal xref">Implementation: HTTPS Notification CBOR Draft Implementation</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<div class="lang-quote sourcecode" id="section-1-1">
+<pre>
+CBOR offers an efficient and compact representation of YANG.
+</pre><a href="#section-1-1" class="pilcrow">¶</a>
+</div>
+<p id="section-1-2">This document introduces a CBOR encoding scheme for event notifications over HTTPS by using the framework proposed in <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">In <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>, the capabilities HTTP-target resource allows a publisher to retrieve supported encoding formats via GET requests, while the relay-notification resource enables the publisher to send YANG notifications via POST requests. These requests and responses use different content types based on the selected encoding scheme. This document defines support for using CBOR encoding defined in section 1 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span><a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">Examples of the GET and POST request and reply encoded in CBOR are also provided.<a href="#section-1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="terminology">
+<section id="section-2">
+      <h2 id="name-terminology">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+      </h2>
+<p id="section-2-1">This document uses the following terms defined in Section 2,3 and 4 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-2.1">
+          <p id="section-2-2.1.1">Capabilities Resource<a href="#section-2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.2">
+          <p id="section-2-2.2.1">Relay-Notification<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.3">
+          <p id="section-2-2.3.1">Event Notification<a href="#section-2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-2-3">The following term(s) are defined in Subscription to YANG Notifications <span>[<a href="#RFC8639" class="cite xref">RFC8639</a>]</span>:<a href="#section-2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-4.1">
+          <p id="section-2-4.1.1">Publisher<a href="#section-2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.2">
+          <p id="section-2-4.2.1">Receiver<a href="#section-2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.3">
+          <p id="section-2-4.3.1">Subscribed Notifications<a href="#section-2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-2-5">The following term(s) are defined in Encoding of Data Modeled with YANG in the Concise Binary Object Representation (CBOR) <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>:<a href="#section-2-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-6.1">
+          <p id="section-2-6.1.1">Diagnostic Notifications<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-6.2">
+          <p id="section-2-6.2.1">YANG Schema Item iDentifier (or "YANG SID" or simply "SID"): 63-bit unsigned integer used to identify different YANG items.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="cbor-encoding-of-the-notifications">
+<section id="section-3">
+      <h2 id="name-cbor-encoding-of-the-notifi">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cbor-encoding-of-the-notifi" class="section-name selfRef">CBOR Encoding of the notification(s)</a>
+      </h2>
+<p id="section-3-1">YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 3.4 and 4.3 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="capabilities-request">
+<section id="section-3.1">
+        <h3 id="name-capabilities-request">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-capabilities-request" class="section-name selfRef">Capabilities Request</a>
+        </h3>
+<p id="section-3.1-1">The publisher sends a request to the receiver to learn its capabilities. In the below example, the “Accept” states that the publisher wants to receive the capabilities response in CBOR but if not supported then in XML or JSON in that order.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<div class="lang-http-request sourcecode" id="section-3.1-2">
+<pre>
+GET /some/path/capabilities HTTP/1.1
+   Host: example.com
+   Accept: application/cbor, application/xml;0.5, application/json;q=0.9
+</pre><a href="#section-3.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="capabilities-response">
+<section id="section-3.2">
+        <h3 id="name-capabilities-response">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-capabilities-response" class="section-name selfRef">Capabilities Response</a>
+        </h3>
+<p id="section-3.2-1">If the receiver is able to reply using “application/cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<div id="cbor-using-names-as-keys">
+<section id="section-3.2.1">
+          <h4 id="name-cbor-using-names-as-keys">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-cbor-using-names-as-keys" class="section-name selfRef">CBOR using names as keys</a>
+          </h4>
+<div class="lang-http-message sourcecode" id="section-3.2.1-1">
+<pre>
+   HTTP/1.1 200 OK
+   Date: Tue, 4 March 2025 20:33:30 GMT
+   Server: example-server
+   Cache-Control: no-cache
+   Content-Type: application/cbor
+</pre><a href="#section-3.2.1-1" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.1-2">Diagnostic Notation:<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.2.1-3">
+<pre>
+   {
+   "receiver-capabilities": {
+     "receiver-capability": [
+       "urn:ietf:capability:https-notif-receiver:encoding:cbor"
+        ]
+      }
+   }
+</pre><a href="#section-3.2.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.1-4">CBOR Encoding:<a href="#section-3.2.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.2.1-5">
+<pre>
+A1                                      # map(1)
+   75                                   # text(21)
+      72656365697665722D6361706162696C6974696573 # "receiver-capabilities"
+   A1                                   # map(1)
+      73                                # text(19)
+         72656365697665722D6361706162696C697479 # "receiver-capability"
+      81                                # array(1)
+         78 36                          # text(54)
+            75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A63626F72 # "urn:ietf:capability:https-notif-receiver:encoding:cbor"
+</pre><a href="#section-3.2.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.1-6">If the receiver is able to reply using “application/cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:<a href="#section-3.2.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="cbor-using-names-as-keys-1">
+<section id="section-3.2.2">
+          <h4 id="name-cbor-using-names-as-keys-2">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-cbor-using-names-as-keys-2" class="section-name selfRef">CBOR using names as keys</a>
+          </h4>
+<div class="lang-http-message sourcecode" id="section-3.2.2-1">
+<pre>
+   HTTP/1.1 200 OK
+   Date: Tue, 4 March 2025 20:33:30 GMT
+   Server: example-server
+   Cache-Control: no-cache
+   Content-Type: application/cbor
+</pre><a href="#section-3.2.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-2">Diagnostic Notation:<a href="#section-3.2.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.2.2-3">
+<pre>
+   {
+   "receiver-capabilities": {
+     "receiver-capability": [
+       "urn:ietf:capability:https-notif-receiver:encoding:json",
+       "urn:ietf:capability:https-notif-receiver:encoding:xml"
+        ]
+      }
+   }
+</pre><a href="#section-3.2.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-4">CBOR Encoding:<a href="#section-3.2.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.2.2-5">
+<pre>
+A1                                      # map(1)
+   75                                   # text(21)
+      72656365697665722D6361706162696C6974696573 # "receiver-capabilities"
+   A1                                   # map(1)
+      73                                # text(19)
+         72656365697665722D6361706162696C697479 # "receiver-capability"
+      82                                # array(2)
+         78 36                          # text(54)
+            75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A6A736F6E # "urn:ietf:capability:https-notif-receiver:encoding:json"
+         78 35                          # text(53)
+            75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A786D6C # "urn:ietf:capability:https-notif-receiver:encoding:xml"
+</pre><a href="#section-3.2.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-6">If the receiver is unable to reply using "application/cbor", but is capable of receiving only cbor then the response might look like this:<a href="#section-3.2.2-6" class="pilcrow">¶</a></p>
+<div class="lang-http-message sourcecode" id="section-3.2.2-7">
+<pre>
+   HTTP/1.1 200 OK
+   Date: Tue, 4 March 2025 20:33:30 GMT
+   Server: example-server
+   Cache-Control: no-cache
+   Content-Type: application/json
+   {
+   "receiver-capabilities": {
+     "receiver-capability": [
+       "urn:ietf:capability:https-notif-receiver:encoding:cbor"
+        ]
+      }
+   }
+</pre><a href="#section-3.2.2-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="relay-notification-request">
+<section id="section-3.3">
+        <h3 id="name-relay-notification-request">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-relay-notification-request" class="section-name selfRef">Relay Notification request</a>
+        </h3>
+<p id="section-3.3-1">The publisher sends an HTTP POST request to the "relay-notification" resource on the receiver with the "Content-Type" header set to "application/cbor" in case the receiver is CBOR capable and a body containing the notification encoded in CBOR.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<div id="cbor-encoding-using-names-as-keys">
+<section id="section-3.3.1">
+          <h4 id="name-cbor-encoding-using-names-a">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-cbor-encoding-using-names-a" class="section-name selfRef">CBOR encoding using names as keys</a>
+          </h4>
+<div class="lang-http-request sourcecode" id="section-3.3.1-1">
+<pre>
+POST /some/path/relay-notification HTTP/1.1
+   Host: example.com
+   Content-Type: application/cbor
+</pre><a href="#section-3.3.1-1" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.1-2">Diagnostic notation:<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<div class="lang-http-response sourcecode" id="section-3.3.1-3">
+<pre>
+   {
+     "ietf-https-notif:notification": {
+       "eventTime": "2013-12-21T00:01:00Z",
+       "example-mod:event" : {
+         "event-class" : "fault",
+         "reporting-entity" : { "card" : "Ethernet0" },
+         "severity" : "major"
+       }
+     }
+   }
+</pre><a href="#section-3.3.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.1-4">Cbor Encoding:<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.1-5">
+<pre>
+A1                                      # map(1)
+   78 1D                                # text(29)
+      696574662D68747470732D6E6F7469663A6E6F74696669636174696F6E # "ietf-https-notif:notification"
+   A2                                   # map(2)
+      69                                # text(9)
+         6576656E7454696D65             # "eventTime"
+      74                                # text(20)
+         323031332D31322D32315430303A30313A30305A # "2013-12-21T00:01:00Z"
+      71                                # text(17)
+         6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
+      A3                                # map(3)
+         68                             # text(8)
+            7365766572697479            # "severity"
+         65                             # text(5)
+            6D616A6F72                  # "major"
+         6B                             # text(11)
+            6576656E742D636C617373      # "event-class"
+         65                             # text(5)
+            6661756C74                  # "fault"
+         70                             # text(16)
+            7265706F7274696E672D656E74697479 # "reporting-entity"
+         A1                             # map(1)
+            64                          # text(4)
+               63617264                 # "card"
+            69                          # text(9)
+               45746865726E657430       # "Ethernet0"
+</pre><a href="#section-3.3.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="cbor-encoding-using-sids-as-keys">
+<section id="section-3.3.2">
+          <h4 id="name-cbor-encoding-using-sids-as">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cbor-encoding-using-sids-as" class="section-name selfRef">CBOR encoding using SIDs as keys</a>
+          </h4>
+<p id="section-3.3.2-1">Diagnostic Notation:<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<div class="lang-http-response sourcecode" id="section-3.3.2-2">
+<pre>
+   {
+    2601: {
+       1: "2013-12-21T00:01:00Z",
+       "example-mod:event" : {
+         "event-class" : "fault",
+         "reporting-entity" : { "card" : "Ethernet0" },
+         "severity" : "major"
+       }
+     }
+   }
+</pre><a href="#section-3.3.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.2-3">The above is assuming the YANG module for event notifications has a corresponding .sid file with these entries<a href="#section-3.3.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.2-4">
+<pre>
+"item": [
+      {
+        "namespace": "module",
+        "identifier": "ietf-notification",
+        "sid": "2600"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-notification:notification",
+        "sid": "2601"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/ietf-notification:notification/eventTime",
+        "sid": "2602"
+      }
+    ]
+</pre><a href="#section-3.3.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.2-5">CBOR Encoding:<a href="#section-3.3.2-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.2-6">
+<pre>
+A1                                      # map(1)
+   19 0A28                              # unsigned(2600)
+   A2                                   # map(2)
+      01                                # unsigned(1)
+      74                                # text(20)
+         323031332D31322D32315430303A30313A30305A # "2013-12-21T00:01:00Z"
+      71                                # text(17)
+         6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
+      A3                                # map(3)
+         68                             # text(8)
+            7365766572697479            # "severity"
+         65                             # text(5)
+            6D616A6F72                  # "major"
+         6B                             # text(11)
+            6576656E742D636C617373      # "event-class"
+         65                             # text(5)
+            6661756C74                  # "fault"
+         70                             # text(16)
+            7265706F7274696E672D656E74697479 # "reporting-entity"
+         A1                             # map(1)
+            64                          # text(4)
+               63617264                 # "card"
+            69                          # text(9)
+               45746865726E657430       # "Ethernet0"
+</pre><a href="#section-3.3.2-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="relay-notification-response">
+<section id="section-3.4">
+        <h3 id="name-relay-notification-response">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-relay-notification-response" class="section-name selfRef">Relay Notification Response</a>
+        </h3>
+<p id="section-3.4-1">The response on success is  "204 (No Content)". In case of corrupted or malformed event, the response is an appropriate HTTP error response.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="implementation-status">
+<section id="section-3.5">
+        <h3 id="name-implementation-status">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+        </h3>
+<p id="section-3.5-1">This section records the status of known implementations of the specification defined by this document at the time of posting. The information is provided to assist the IETF in evaluating the maturity and implementability of the specification. This section will be removed prior to publication as an RFC.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="implementation-https-notification-cbor-draft-implementation">
+<section id="section-3.6">
+        <h3 id="name-implementation-https-notifi">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-implementation-https-notifi" class="section-name selfRef">Implementation: HTTPS Notification CBOR Draft Implementation</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="section-3.6-1.1">
+            <p id="section-3.6-1.1.1"><em>Organization</em>:
+National Institute of Technology Karnataka (NITK), Surathkal<a href="#section-3.6-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-1.2">
+            <p id="section-3.6-1.2.1"><em>Implementation Name / Web Page</em>:
+HTTPS Notification CBOR Draft Implementation
+<a href="https://github.com/MeherRushi/https-notif-draft-impl">https://github.com/MeherRushi/https-notif-draft-impl</a><a href="#section-3.6-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-1.3">
+            <p id="section-3.6-1.3.1"><em>Description</em>:
+This implementation provides a Python-based prototype of the mechanism defined in this document for transporting YANG notifications over HTTPS using JSON, XML and CBOR encoding. It supports name-based CBOR encoding and includes basic publisher and receiver roles to demonstrate end-to-end message exchange.<a href="#section-3.6-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-1.4">
+            <p id="section-3.6-1.4.1"><em>Maturity Level</em>:  Prototype<a href="#section-3.6-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-1.5">
+            <p id="section-3.6-1.5.1"><em>Coverage</em>:<a href="#section-3.6-1.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.6-1.5.2.1">
+                <p id="section-3.6-1.5.2.1.1">Capabilities discovery via HTTP GET to /capabilities<a href="#section-3.6-1.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.5.2.2">
+                <p id="section-3.6-1.5.2.2.1">Event publication via HTTP POST to /relay-notification<a href="#section-3.6-1.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.5.2.3">
+                <p id="section-3.6-1.5.2.3.1">Support for name-based CBOR encoding as described in this document<a href="#section-3.6-1.5.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-3.6-1.6">
+            <p id="section-3.6-1.6.1"><em>Version Compatibility</em>:
+The implementation is based on  draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.<a href="#section-3.6-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-1.7">
+            <p id="section-3.6-1.7.1"><em>Licensing</em>:
+Freely distributable under an MIT-style license.<a href="#section-3.6-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-1.8">
+            <p id="section-3.6-1.8.1"><em>Implementation Experience</em>:<a href="#section-3.6-1.8.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.6-1.8.2.1">
+                <p id="section-3.6-1.8.2.1.1">Developed and demonstrated at IETF 121 and 122 Hackathon.<a href="#section-3.6-1.8.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.8.2.2">
+                <p id="section-3.6-1.8.2.2.1">Worked toward enabling CBOR encoding in the libyang library as part of the hackathon effort (<a href="https://datatracker.ietf.org/meeting/123/materials/slides-123-hackathon-sessd-adding-cbor-support-in-libyang-00">slides</a>).<a href="#section-3.6-1.8.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.8.2.3">
+                <p id="section-3.6-1.8.2.3.1">Evaluated CBOR efficiency compared to JSON and XML in constrained environments.<a href="#section-3.6-1.8.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.8.2.4">
+                <p id="section-3.6-1.8.2.4.1">Built tooling to simulate and measure notification transfer behavior over varying network conditions.<a href="#section-3.6-1.8.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.8.2.5">
+                <p id="section-3.6-1.8.2.5.1">Diagnostic encoding examples used for validation of CBOR structures.<a href="#section-3.6-1.8.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-3.6-1.9">
+            <p id="section-3.6-1.9.1"><em>Contact Information</em>:<a href="#section-3.6-1.9.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.6-1.9.2.1">
+                <p id="section-3.6-1.9.2.1.1">Bharadwaja Meherrushi Chittapragada (meher.211cs216@nitk.edu.in)<a href="#section-3.6-1.9.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.9.2.2">
+                <p id="section-3.6-1.9.2.2.1">Vartika T Rao (vartikatrao.211it077@nitk.edu.in)<a href="#section-3.6-1.9.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.9.2.3">
+                <p id="section-3.6-1.9.2.3.1">Siddharth Bhat (sidbhat.211ee151@nitk.edu.in)<a href="#section-3.6-1.9.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.6-1.9.2.4">
+                <p id="section-3.6-1.9.2.4.1">Hayyan Arshad (hayyanarshad.211cs222@nitk.edu.in)<a href="#section-3.6-1.9.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-3.6-1.10">
+            <p id="section-3.6-1.10.1"><em>Last Updated</em>:
+July 24, 2025<a href="#section-3.6-1.10.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">Addition of the CBOR encoding introduces no specific security exposures or risks other that the ones mentioned in <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span> and <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> (An HTTPS-based Transport for YANG Notifications)<a href="#section-4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-5">
+      <h2 id="name-iana-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-5-1">This document requests that IANA include an additional entry in the “Capabilities for HTTPS Notification Receivers” registry, defined in <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>. The following entry is added:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5-2">
+<pre>
+Record:
+   URN:         urn:ietf:params:yang-notif:https-capability:encoding:cbor
+   Reference:   RFC XXXX:An HTTPS-based Transport for YANG Notifications
+   Description: Identifies support for CBOR-encoded notifications.
+</pre><a href="#section-5-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-6">
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.draft-ietf-netconf-https-notif">[I-D.draft-ietf-netconf-https-notif]</dt>
+        <dd>
+<span class="refAuthor">Jethanandani, M.</span> and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"An HTTPS-based Transport for YANG Notifications"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-https-notif-15</span>, <time datetime="2024-02-01" class="refDate">1 February 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netconf-https-notif-15">https://datatracker.ietf.org/doc/html/draft-ietf-netconf-https-notif-15</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8639">[RFC8639]</dt>
+        <dd>
+<span class="refAuthor">Voit, E.</span>, <span class="refAuthor">Clemm, A.</span>, <span class="refAuthor">Gonzalez Prieto, A.</span>, <span class="refAuthor">Nilsen-Nygaard, E.</span>, and <span class="refAuthor">A. Tripathy</span>, <span class="refTitle">"Subscription to YANG Notifications"</span>, <span class="seriesInfo">RFC 8639</span>, <span class="seriesInfo">DOI 10.17487/RFC8639</span>, <time datetime="2019-09" class="refDate">September 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8639">https://www.rfc-editor.org/rfc/rfc8639</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9254">[RFC9254]</dt>
+      <dd>
+<span class="refAuthor">Veillette, M., Ed.</span>, <span class="refAuthor">Petrov, I., Ed.</span>, <span class="refAuthor">Pelov, A.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Encoding of Data Modeled with YANG in the Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 9254</span>, <span class="seriesInfo">DOI 10.17487/RFC9254</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9254">https://www.rfc-editor.org/rfc/rfc9254</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC3553">[RFC3553]</dt>
+      <dd>
+<span class="refAuthor">Mealling, M.</span>, <span class="refAuthor">Masinter, L.</span>, <span class="refAuthor">Hardie, T.</span>, and <span class="refAuthor">G. Klyne</span>, <span class="refTitle">"An IETF URN Sub-namespace for Registered Protocol Parameters"</span>, <span class="seriesInfo">BCP 73</span>, <span class="seriesInfo">RFC 3553</span>, <span class="seriesInfo">DOI 10.17487/RFC3553</span>, <time datetime="2003-06" class="refDate">June 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3553">https://www.rfc-editor.org/rfc/rfc3553</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">The authors acknowledge the support of Kent Watsen and Mahesh Jethanandani, the authors of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> for their guidance and support provided to draft this document.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Bharadwaja Meherrushi Chittapragada</span></div>
+<div dir="auto" class="left"><span class="org">National Institute of Technology Karnataka, Surathkal</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:meherrushi2@gmail.com" class="email">meherrushi2@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Siddharth Bhat</span></div>
+<div dir="auto" class="left"><span class="org">National Institute of Technology Karnataka, Surathkal</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:siddharth.bhat10@gmail.com" class="email">siddharth.bhat10@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Vartika T Rao</span></div>
+<div dir="auto" class="left"><span class="org">National Institute of Technology Karnataka, Surathkal</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:vartikatrao@gmail.com" class="email">vartikatrao@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Hayyan Arshad</span></div>
+<div dir="auto" class="left"><span class="org">National Institute of Technology Karnataka, Surathkal</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:hayyanhamnah@gmail.com" class="email">hayyanhamnah@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Mohit P. Tahiliani</span></div>
+<div dir="auto" class="left"><span class="org">National Institute of Technology Karnataka, Surathkal</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:tahiliani@nitk.edu.in" class="email">tahiliani@nitk.edu.in</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
