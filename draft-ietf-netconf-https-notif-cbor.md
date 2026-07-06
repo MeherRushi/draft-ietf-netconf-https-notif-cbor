@@ -138,7 +138,7 @@ Diagnostic Notation:
 
 ~~~
    {
-   "receiver-capabilities": {
+   "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
        "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
         ]
@@ -150,8 +150,8 @@ CBOR Encoding:
 
 ~~~
 A1                                      # map(1)
-   75                                   # text(21)
-      72656365697665722D6361706162696C6974696573 # "receiver-capabilities"
+   78 30                                # text(48)
+      696574662D68747470732D6E6F7469662D7472616E73706F72743A72656365697665722D6361706162696C6974696573 # "ietf-https-notif-transport:receiver-capabilities"
    A1                                   # map(1)
       73                                # text(19)
          72656365697665722D6361706162696C697479 # "receiver-capability"
@@ -176,7 +176,7 @@ Diagnostic Notation:
 
 ~~~
    {
-   "receiver-capabilities": {
+   "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
        "urn:ietf:params:yang-notif:https-capability:encoding:json",
        "urn:ietf:params:yang-notif:https-capability:encoding:xml"
@@ -189,8 +189,8 @@ CBOR Encoding:
 
 ~~~
 A1                                      # map(1)
-   75                                   # text(21)
-      72656365697665722D6361706162696C6974696573 # "receiver-capabilities"
+   78 30                                # text(48)
+      696574662D68747470732D6E6F7469662D7472616E73706F72743A72656365697665722D6361706162696C6974696573 # "ietf-https-notif-transport:receiver-capabilities"
    A1                                   # map(1)
       73                                # text(19)
          72656365697665722D6361706162696C697479 # "receiver-capability"
@@ -210,7 +210,7 @@ A1                                      # map(1)
    Cache-Control: no-cache
    Content-Type: application/yang-data+json
    {
-   "receiver-capabilities": {
+   "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
        "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
         ]
@@ -372,7 +372,7 @@ This section records the status of known implementations of the specification de
 
 
 - *Version Compatibility*:
-  The implementation is based on  draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.
+  The implementation is based on draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.
 
 - *Licensing*:
   Freely distributable under an MIT-style license.
