@@ -1183,10 +1183,10 @@ svg {
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-capabilities-response" class="internal xref">Capabilities Response</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-cbor-using-names-as-keys" class="internal xref">CBOR using names as keys</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-cbor-using-names-as-keys-re" class="internal xref">CBOR using names as keys (receiver accepts CBOR only)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
-                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-cbor-using-names-as-keys-2" class="internal xref">CBOR using names as keys</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-cbor-using-names-as-keys-rec" class="internal xref">CBOR using names as keys (receiver accepts JSON and XML)</a></p>
 </li>
                 </ul>
 </li>
@@ -1325,10 +1325,10 @@ GET /some/path/capabilities HTTP/1.1
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-capabilities-response" class="section-name selfRef">Capabilities Response</a>
         </h3>
 <p id="section-3.2-1">If the receiver is able to reply using “application/yang-data+cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<div id="cbor-using-names-as-keys">
+<div id="cbor-using-names-as-keys-receiver-accepts-cbor-only">
 <section id="section-3.2.1">
-          <h4 id="name-cbor-using-names-as-keys">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-cbor-using-names-as-keys" class="section-name selfRef">CBOR using names as keys</a>
+          <h4 id="name-cbor-using-names-as-keys-re">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-cbor-using-names-as-keys-re" class="section-name selfRef">CBOR using names as keys (receiver accepts CBOR only)</a>
           </h4>
 <div class="lang-http-message sourcecode" id="section-3.2.1-1">
 <pre>
@@ -1368,10 +1368,10 @@ A1                                      # map(1)
 <p id="section-3.2.1-6">If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:<a href="#section-3.2.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="cbor-using-names-as-keys-1">
+<div id="cbor-using-names-as-keys-receiver-accepts-json-and-xml">
 <section id="section-3.2.2">
-          <h4 id="name-cbor-using-names-as-keys-2">
-<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-cbor-using-names-as-keys-2" class="section-name selfRef">CBOR using names as keys</a>
+          <h4 id="name-cbor-using-names-as-keys-rec">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-cbor-using-names-as-keys-rec" class="section-name selfRef">CBOR using names as keys (receiver accepts JSON and XML)</a>
           </h4>
 <div class="lang-http-message sourcecode" id="section-3.2.2-1">
 <pre>

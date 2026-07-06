@@ -76,8 +76,9 @@ Table of Contents
    3.  CBOR Encoding of the notification(s)
      3.1.  Capabilities Request
      3.2.  Capabilities Response
-       3.2.1.  CBOR using names as keys
-       3.2.2.  CBOR using names as keys
+       3.2.1.  CBOR using names as keys (receiver accepts CBOR only)
+       3.2.2.  CBOR using names as keys (receiver accepts JSON and
+               XML)
      3.3.  Relay Notification request
        3.3.1.  CBOR encoding using names as keys
        3.3.2.  CBOR encoding using SIDs as keys
@@ -177,7 +178,7 @@ Table of Contents
    and assuming it is only capable of receiving CBOR encoded messages
    the response would look like this
 
-3.2.1.  CBOR using names as keys
+3.2.1.  CBOR using names as keys (receiver accepts CBOR only)
 
       HTTP/1.1 200 OK
       Date: Tue, 4 March 2025 20:33:30 GMT
@@ -211,7 +212,7 @@ A1                                      # map(1)
    and assuming it is not capable of receiving cbor, but can receive
    both json and xml notifications:
 
-3.2.2.  CBOR using names as keys
+3.2.2.  CBOR using names as keys (receiver accepts JSON and XML)
 
       HTTP/1.1 200 OK
       Date: Tue, 4 March 2025 20:33:30 GMT
