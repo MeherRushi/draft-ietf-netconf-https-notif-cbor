@@ -117,12 +117,12 @@ The publisher sends a request to the receiver to learn its capabilities. In the 
 ~~~ http-request
 GET /some/path/capabilities HTTP/1.1
    Host: example.com
-   Accept: application/cbor, application/xml;0.5, application/json;q=0.9
+   Accept: application/yang-data+cbor, application/yang-data+xml;0.5, application/yang-data+json;q=0.9
 ~~~
 
 ## Capabilities Response
 
- If the receiver is able to reply using “application/cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this
+ If the receiver is able to reply using “application/yang-data+cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this
 
 ### CBOR using names as keys
 
@@ -131,7 +131,7 @@ GET /some/path/capabilities HTTP/1.1
    Date: Tue, 4 March 2025 20:33:30 GMT
    Server: example-server
    Cache-Control: no-cache
-   Content-Type: application/cbor
+   Content-Type: application/yang-data+cbor
 ~~~
 
 Diagnostic Notation:
@@ -160,7 +160,7 @@ A1                                      # map(1)
             75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A63626F72 # "urn:ietf:capability:https-notif-receiver:encoding:cbor"
 ~~~
 
-If the receiver is able to reply using “application/cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:
+If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:
 
 ### CBOR using names as keys
 
@@ -169,7 +169,7 @@ If the receiver is able to reply using “application/cbor” and assuming it is
    Date: Tue, 4 March 2025 20:33:30 GMT
    Server: example-server
    Cache-Control: no-cache
-   Content-Type: application/cbor
+   Content-Type: application/yang-data+cbor
 ~~~
 
 Diagnostic Notation:
@@ -201,14 +201,14 @@ A1                                      # map(1)
             75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A786D6C # "urn:ietf:capability:https-notif-receiver:encoding:xml"
 ~~~
 
- If the receiver is unable to reply using "application/cbor", but is capable of receiving only cbor then the response might look like this:
+ If the receiver is unable to reply using "application/yang-data+cbor", but is capable of receiving only cbor then the response might look like this:
 
 ~~~ http-message
    HTTP/1.1 200 OK
    Date: Tue, 4 March 2025 20:33:30 GMT
    Server: example-server
    Cache-Control: no-cache
-   Content-Type: application/json
+   Content-Type: application/yang-data+json
    {
    "receiver-capabilities": {
      "receiver-capability": [
@@ -220,14 +220,14 @@ A1                                      # map(1)
 
 ##  Relay Notification request
 
-The publisher sends an HTTP POST request to the "relay-notification" resource on the receiver with the "Content-Type" header set to "application/cbor" in case the receiver is CBOR capable and a body containing the notification encoded in CBOR.
+The publisher sends an HTTP POST request to the "relay-notification" resource on the receiver with the "Content-Type" header set to "application/yang-data+cbor" in case the receiver is CBOR capable and a body containing the notification encoded in CBOR.
 
 ### CBOR encoding using names as keys
 
 ~~~ http-request
 POST /some/path/relay-notification HTTP/1.1
    Host: example.com
-   Content-Type: application/cbor
+   Content-Type: application/yang-data+cbor
 ~~~
 
 Diagnostic notation:
