@@ -348,6 +348,12 @@ A1                                      # map(1)
 
 The response on success is  "204 (No Content)". In case of corrupted or malformed event, the response is an appropriate HTTP error response.
 
+## Legacy RFC 5277 Notifications
+
+{{!I-D.draft-ietf-netconf-https-notif}} defines optional support for sending legacy notifications, as defined in NETCONF Event Notifications {{!RFC5277}}, using the "application/xml" media type. This legacy mode exists for interoperability with publishers that are not aware of YANG media types; a receiver advertises support for it using the "urn:ietf:params:yang-notif:https-capability:rfc5277-notif" capability.
+
+The CBOR encoding defined in this document applies to YANG-modeled notifications, including the eventTime envelope, and is advertised using the "urn:ietf:params:yang-notif:https-capability:encoding:cbor" capability registered by this document. Because {{!I-D.draft-ietf-netconf-https-notif}} defines the legacy RFC 5277 mode as XML-only, this document does not define a CBOR variant of it. A publisher that is able to produce CBOR is YANG-aware and therefore uses the CBOR encoding described here rather than the legacy mode.
+
 ## Implementation Status
 
 This section records the status of known implementations of the specification defined by this document at the time of posting. The information is provided to assist the IETF in evaluating the maturity and implementability of the specification. This section will be removed prior to publication as an RFC.
