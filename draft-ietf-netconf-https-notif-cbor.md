@@ -108,7 +108,7 @@ The following term(s) are defined in Encoding of Data Modeled with YANG in the C
 
 # CBOR Encoding of the notification(s)
 
-YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 3.4 and 4.3 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.
+YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names are similar to JSON encoding as defined in Section 3.4 and 4.3 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.
 
 ## Capabilities Request
 
