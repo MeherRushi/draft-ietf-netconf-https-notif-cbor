@@ -140,7 +140,7 @@ Diagnostic Notation:
    {
    "receiver-capabilities": {
      "receiver-capability": [
-       "urn:ietf:capability:https-notif-receiver:encoding:cbor"
+       "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
         ]
       }
    }
@@ -156,8 +156,8 @@ A1                                      # map(1)
       73                                # text(19)
          72656365697665722D6361706162696C697479 # "receiver-capability"
       81                                # array(1)
-         78 36                          # text(54)
-            75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A63626F72 # "urn:ietf:capability:https-notif-receiver:encoding:cbor"
+         78 39                          # text(57)
+            75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A63626F72 # "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
 ~~~
 
 If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:
@@ -178,8 +178,8 @@ Diagnostic Notation:
    {
    "receiver-capabilities": {
      "receiver-capability": [
-       "urn:ietf:capability:https-notif-receiver:encoding:json",
-       "urn:ietf:capability:https-notif-receiver:encoding:xml"
+       "urn:ietf:params:yang-notif:https-capability:encoding:json",
+       "urn:ietf:params:yang-notif:https-capability:encoding:xml"
         ]
       }
    }
@@ -195,10 +195,10 @@ A1                                      # map(1)
       73                                # text(19)
          72656365697665722D6361706162696C697479 # "receiver-capability"
       82                                # array(2)
-         78 36                          # text(54)
-            75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A6A736F6E # "urn:ietf:capability:https-notif-receiver:encoding:json"
-         78 35                          # text(53)
-            75726E3A696574663A6361706162696C6974793A68747470732D6E6F7469662D72656365697665723A656E636F64696E673A786D6C # "urn:ietf:capability:https-notif-receiver:encoding:xml"
+         78 39                          # text(57)
+            75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A6A736F6E # "urn:ietf:params:yang-notif:https-capability:encoding:json"
+         78 38                          # text(56)
+            75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A786D6C # "urn:ietf:params:yang-notif:https-capability:encoding:xml"
 ~~~
 
  If the receiver is unable to reply using "application/yang-data+cbor", but is capable of receiving only cbor then the response might look like this:
@@ -212,7 +212,7 @@ A1                                      # map(1)
    {
    "receiver-capabilities": {
      "receiver-capability": [
-       "urn:ietf:capability:https-notif-receiver:encoding:cbor"
+       "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
         ]
       }
    }
