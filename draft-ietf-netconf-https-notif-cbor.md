@@ -52,11 +52,9 @@ author:
 
 normative:
  I-D.draft-ietf-netconf-https-notif:
+ RFC8639:
  RFC8949:
  RFC9254:
-
-informative:
- RFC3553:
 
 
 --- abstract
@@ -72,7 +70,7 @@ This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBO
 CBOR offers an efficient and compact representation of YANG.
 ~~~~
 
-This document introduces a CBOR encoding scheme for event notifications over HTTPS by using the framework proposed in {{!I-D.draft-ietf-netconf-https-notif}} which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.
+This document introduces a CBOR {{!RFC8949}} encoding scheme for event notifications over HTTPS by using the framework proposed in {{!I-D.draft-ietf-netconf-https-notif}} which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.
 
 
 In {{!I-D.draft-ietf-netconf-https-notif}}, the capabilities HTTP-target resource allows a publisher to retrieve supported encoding formats via GET requests, while the relay-notification resource enables the publisher to send YANG notifications via POST requests. These requests and responses use different content types based on the selected encoding scheme. This document defines support for CBOR encoding, in addition to the JSON and XML encodings defined in {{!I-D.draft-ietf-netconf-https-notif}}.
@@ -262,10 +260,6 @@ A1                                      # map(1)
       71                                # text(17)
          6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
       A3                                # map(3)
-         68                             # text(8)
-            7365766572697479            # "severity"
-         65                             # text(5)
-            6D616A6F72                  # "major"
          6B                             # text(11)
             6576656E742D636C617373      # "event-class"
          65                             # text(5)
@@ -277,9 +271,13 @@ A1                                      # map(1)
                63617264                 # "card"
             69                          # text(9)
                45746865726E657430       # "Ethernet0"
+         68                             # text(8)
+            7365766572697479            # "severity"
+         65                             # text(5)
+            6D616A6F72                  # "major"
 ~~~
 
-### CBOR encoding using SIDs as keys
+### CBOR encoding using SIDs as keys {#sid-keys}
 
 ~~~ http-request
 POST /some/path/relay-notification HTTP/1.1
@@ -355,6 +353,8 @@ The above assumes that the YANG modules for the notification envelope and for th
       }
     ]
 ~~~
+
+The SID values shown above are illustrative examples only; they are not SIDs registered for any real YANG module. A deployment uses the SIDs actually assigned to the modules involved.
 
 Keys are encoded as SID deltas relative to the reference SID of the enclosing map, as defined in Section 3.2 of {{!RFC9254}}. Because "example-mod:event" is defined in a different module than its parent, its delta is large (60001 - 2601 = 57400); alternatively, it MAY be encoded as an absolute SID using CBOR tag 47.
 
@@ -449,7 +449,7 @@ This document requests that IANA include an additional entry in the “Capabilit
 ~~~
 Record:
    URN:         urn:ietf:params:yang-notif:https-capability:encoding:cbor
-   Reference:   RFC XXXX:An HTTPS-based Transport for YANG Notifications
+   Reference:   RFC XXXX: CBOR Encoding for HTTPS-based YANG Notifications Transport
    Description: Identifies support for CBOR-encoded notifications.
 ~~~
 
