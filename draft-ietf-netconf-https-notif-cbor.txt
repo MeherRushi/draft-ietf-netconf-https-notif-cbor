@@ -17,7 +17,7 @@ Expires: 7 January 2027                                        H. Arshad
 Abstract
 
    This document extends [I-D.draft-ietf-netconf-https-notif] by
-   introducing CBOR encoding for YANG notifications over HTTPS Transport
+   introducing CBOR encoding for YANG notifications over HTTPS transport
    in addition to the existing JSON and XML encoding schemes.
 
 About This Document
