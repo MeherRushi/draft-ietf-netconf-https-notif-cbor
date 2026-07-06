@@ -5,10 +5,10 @@
 Network Configuration                                B. M. Chittapragada
 Internet-Draft                                                   S. Bhat
 Intended status: Standards Track                               V. T. Rao
-Expires: 9 August 2026                                         H. Arshad
+Expires: 7 January 2027                                        H. Arshad
                                                          M. P. Tahiliani
-                   National Institute of Technology Karnataka, Surathkal
-                                                         5 February 2026
+                              National Institute of Technology Karnataka
+                                                             6 July 2026
 
 
        CBOR Encoding for HTTPS-based YANG Notifications Transport
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 August 2026.
+   This Internet-Draft will expire on 7 January 2027.
 
 Copyright Notice
 
@@ -388,8 +388,7 @@ A1                                      # map(1)
 
 3.6.  Implementation: HTTPS Notification CBOR Draft Implementation
 
-   *  _Organization_: National Institute of Technology Karnataka (NITK),
-      Surathkal
+   *  _Organization_: National Institute of Technology Karnataka
 
    *  _Implementation Name / Web Page_: HTTPS Notification CBOR Draft
       Implementation https://github.com/MeherRushi/https-notif-draft-
@@ -475,9 +474,9 @@ Record:
    [I-D.draft-ietf-netconf-https-notif]
               Jethanandani, M. and K. Watsen, "An HTTPS-based Transport
               for YANG Notifications", Work in Progress, Internet-Draft,
-              draft-ietf-netconf-https-notif-15, 1 February 2024,
+              draft-ietf-netconf-https-notif-16, 30 June 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-netconf-
-              https-notif-15>.
+              https-notif-16>.
 
    [RFC8639]  Voit, E., Clemm, A., Gonzalez Prieto, A., Nilsen-Nygaard,
               E., and A. Tripathy, "Subscription to YANG Notifications",
@@ -511,25 +510,25 @@ Acknowledgments
 Authors' Addresses
 
    Bharadwaja Meherrushi Chittapragada
-   National Institute of Technology Karnataka, Surathkal
+   National Institute of Technology Karnataka
    Email: meherrushi2@gmail.com
 
 
    Siddharth Bhat
-   National Institute of Technology Karnataka, Surathkal
+   National Institute of Technology Karnataka
    Email: siddharth.bhat10@gmail.com
 
 
    Vartika T Rao
-   National Institute of Technology Karnataka, Surathkal
+   National Institute of Technology Karnataka
    Email: vartikatrao@gmail.com
 
 
    Hayyan Arshad
-   National Institute of Technology Karnataka, Surathkal
+   National Institute of Technology Karnataka
    Email: hayyanhamnah@gmail.com
 
 
    Mohit P. Tahiliani
-   National Institute of Technology Karnataka, Surathkal
+   National Institute of Technology Karnataka
    Email: tahiliani@nitk.edu.in
