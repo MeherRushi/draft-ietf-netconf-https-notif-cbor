@@ -11,7 +11,7 @@
 <meta content="Hayyan Arshad" name="author">
 <meta content="Mohit P. Tahiliani" name="author">
 <meta content="
-       This document extends   by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes. 
+       This document extends   by introducing CBOR encoding for YANG notifications over HTTPS transport in addition to the existing JSON and XML encoding schemes. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="cbor" name="keyword">
@@ -1101,7 +1101,7 @@ svg {
 <h1 id="title">CBOR Encoding for HTTPS-based YANG Notifications Transport</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document extends <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document extends <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> by introducing CBOR encoding for YANG notifications over HTTPS transport in addition to the existing JSON and XML encoding schemes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1183,10 +1183,10 @@ svg {
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-capabilities-response" class="internal xref">Capabilities Response</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-cbor-using-names-as-keys" class="internal xref">CBOR using names as keys</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-cbor-using-names-as-keys-re" class="internal xref">CBOR using names as keys (receiver accepts CBOR only)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
-                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-cbor-using-names-as-keys-2" class="internal xref">CBOR using names as keys</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-cbor-using-names-as-keys-rec" class="internal xref">CBOR using names as keys (receiver accepts JSON and XML)</a></p>
 </li>
                 </ul>
 </li>
@@ -1205,10 +1205,13 @@ svg {
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-relay-notification-response" class="internal xref">Relay Notification Response</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-legacy-rfc-5277-notificatio" class="internal xref">Legacy RFC 5277 Notifications</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-implementation-https-notifi" class="internal xref">Implementation: HTTPS Notification CBOR Draft Implementation</a></p>
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-implementation-status" class="internal xref">Implementation Status</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-implementation-https-notifi" class="internal xref">Implementation: HTTPS Notification CBOR Draft Implementation</a></p>
 </li>
             </ul>
 </li>
@@ -1251,7 +1254,7 @@ CBOR offers an efficient and compact representation of YANG.
       <h2 id="name-terminology">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
-<p id="section-2-1">This document uses the following terms defined in Section 2,3 and 4 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This document uses the following terms defined in Sections 2, 3, and 4 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>:<a href="#section-2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-2.1">
           <p id="section-2-2.1.1">Capabilities Resource<a href="#section-2-2.1.1" class="pilcrow">¶</a></p>
@@ -1291,7 +1294,7 @@ CBOR offers an efficient and compact representation of YANG.
       <h2 id="name-cbor-encoding-of-the-notifi">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cbor-encoding-of-the-notifi" class="section-name selfRef">CBOR Encoding of the notification(s)</a>
       </h2>
-<p id="section-3-1">YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 3.4 and 4.3 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>, and the keys of the encoded data use SID values as shown in <a href="#sid-keys" class="auto internal xref">Section 3.3.2</a>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 4.1 of <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The "application/yang-data+cbor" media type used throughout this document is defined in Section 9 of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>. That registration also defines the "id" parameter: "application/yang-data+cbor; id=name" for the name-based keys described in this document, and "application/yang-data+cbor; id=sid" for the SID-based keys.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <div id="capabilities-request">
 <section id="section-3.1">
@@ -1314,10 +1317,10 @@ GET /some/path/capabilities HTTP/1.1
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-capabilities-response" class="section-name selfRef">Capabilities Response</a>
         </h3>
 <p id="section-3.2-1">If the receiver is able to reply using “application/yang-data+cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<div id="cbor-using-names-as-keys">
+<div id="cbor-using-names-as-keys-receiver-accepts-cbor-only">
 <section id="section-3.2.1">
-          <h4 id="name-cbor-using-names-as-keys">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-cbor-using-names-as-keys" class="section-name selfRef">CBOR using names as keys</a>
+          <h4 id="name-cbor-using-names-as-keys-re">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-cbor-using-names-as-keys-re" class="section-name selfRef">CBOR using names as keys (receiver accepts CBOR only)</a>
           </h4>
 <div class="lang-http-message sourcecode" id="section-3.2.1-1">
 <pre>
@@ -1357,10 +1360,10 @@ A1                                      # map(1)
 <p id="section-3.2.1-6">If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:<a href="#section-3.2.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="cbor-using-names-as-keys-1">
+<div id="cbor-using-names-as-keys-receiver-accepts-json-and-xml">
 <section id="section-3.2.2">
-          <h4 id="name-cbor-using-names-as-keys-2">
-<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-cbor-using-names-as-keys-2" class="section-name selfRef">CBOR using names as keys</a>
+          <h4 id="name-cbor-using-names-as-keys-rec">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-cbor-using-names-as-keys-rec" class="section-name selfRef">CBOR using names as keys (receiver accepts JSON and XML)</a>
           </h4>
 <div class="lang-http-message sourcecode" id="section-3.2.2-1">
 <pre>
@@ -1400,7 +1403,7 @@ A1                                      # map(1)
             75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A786D6C # "urn:ietf:params:yang-notif:https-capability:encoding:xml"
 </pre><a href="#section-3.2.2-5" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2.2-6">If the receiver is unable to reply using "application/yang-data+cbor", but is capable of receiving only cbor then the response might look like this:<a href="#section-3.2.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2.2-6">If the receiver cannot encode the capabilities response in "application/yang-data+cbor" but is itself only able to receive CBOR-encoded notifications, it replies using JSON (or XML) while still advertising the CBOR capability:<a href="#section-3.2.2-6" class="pilcrow">¶</a></p>
 <div class="lang-http-message sourcecode" id="section-3.2.2-7">
 <pre>
    HTTP/1.1 200 OK
@@ -1408,6 +1411,7 @@ A1                                      # map(1)
    Server: example-server
    Cache-Control: no-cache
    Content-Type: application/yang-data+json
+
    {
    "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
@@ -1606,98 +1610,107 @@ A1                                      # map(1)
 <p id="section-3.4-1">The response on success SHOULD be from the 2XX class of codes. In case of corrupted or malformed event, the response SHOULD be an appropriate HTTP error response.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="implementation-status">
+<div id="legacy-rfc-5277-notifications">
 <section id="section-3.5">
-        <h3 id="name-implementation-status">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+        <h3 id="name-legacy-rfc-5277-notificatio">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-legacy-rfc-5277-notificatio" class="section-name selfRef">Legacy RFC 5277 Notifications</a>
         </h3>
-<p id="section-3.5-1">This section records the status of known implementations of the specification defined by this document at the time of posting. The information is provided to assist the IETF in evaluating the maturity and implementability of the specification. This section will be removed prior to publication as an RFC.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-1"><span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> defines optional support for sending legacy notifications, as defined in NETCONF Event Notifications <span>[<a href="#RFC5277" class="cite xref">RFC5277</a>]</span>, using the "application/xml" media type. This legacy mode exists for interoperability with publishers that are not aware of YANG media types; a receiver advertises support for it using the "urn:ietf:params:yang-notif:https-capability:rfc5277-notif" capability.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.5-2">The CBOR encoding defined in this document applies to YANG-modeled notifications, including the eventTime envelope, and is advertised using the "urn:ietf:params:yang-notif:https-capability:encoding:cbor" capability registered by this document. Because <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> defines the legacy RFC 5277 mode as XML-only, this document does not define a CBOR variant of it. A publisher that is able to produce CBOR is YANG-aware and therefore uses the CBOR encoding described here rather than the legacy mode.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="implementation-status">
+<section id="section-3.6">
+        <h3 id="name-implementation-status">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-implementation-status" class="section-name selfRef">Implementation Status</a>
+        </h3>
+<p id="section-3.6-1">This section records the status of known implementations of the specification defined by this document at the time of posting. The information is provided to assist the IETF in evaluating the maturity and implementability of the specification. This section will be removed prior to publication as an RFC.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="implementation-https-notification-cbor-draft-implementation">
-<section id="section-3.6">
+<section id="section-3.7">
         <h3 id="name-implementation-https-notifi">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-implementation-https-notifi" class="section-name selfRef">Implementation: HTTPS Notification CBOR Draft Implementation</a>
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-implementation-https-notifi" class="section-name selfRef">Implementation: HTTPS Notification CBOR Draft Implementation</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="section-3.6-1.1">
-            <p id="section-3.6-1.1.1"><em>Organization</em>:
-National Institute of Technology Karnataka<a href="#section-3.6-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.7-1.1">
+            <p id="section-3.7-1.1.1"><em>Organization</em>:
+National Institute of Technology Karnataka<a href="#section-3.7-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-1.2">
-            <p id="section-3.6-1.2.1"><em>Implementation Name / Web Page</em>:
+          <li class="normal" id="section-3.7-1.2">
+            <p id="section-3.7-1.2.1"><em>Implementation Name / Web Page</em>:
 HTTPS Notification CBOR Draft Implementation
-<a href="https://github.com/MeherRushi/https-notif-draft-impl">https://github.com/MeherRushi/https-notif-draft-impl</a><a href="#section-3.6-1.2.1" class="pilcrow">¶</a></p>
+<a href="https://github.com/MeherRushi/https-notif-draft-impl">https://github.com/MeherRushi/https-notif-draft-impl</a><a href="#section-3.7-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-1.3">
-            <p id="section-3.6-1.3.1"><em>Description</em>:
-This implementation provides a Python-based prototype of the mechanism defined in this document for transporting YANG notifications over HTTPS using JSON, XML and CBOR encoding. It supports name-based CBOR encoding and includes basic publisher and receiver roles to demonstrate end-to-end message exchange.<a href="#section-3.6-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.3">
+            <p id="section-3.7-1.3.1"><em>Description</em>:
+This implementation provides a Python-based prototype of the mechanism defined in this document for transporting YANG notifications over HTTPS using JSON, XML and CBOR encoding. It supports name-based CBOR encoding and includes basic publisher and receiver roles to demonstrate end-to-end message exchange.<a href="#section-3.7-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-1.4">
-            <p id="section-3.6-1.4.1"><em>Maturity Level</em>:  Prototype<a href="#section-3.6-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.4">
+            <p id="section-3.7-1.4.1"><em>Maturity Level</em>:  Prototype<a href="#section-3.7-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-1.5">
-            <p id="section-3.6-1.5.1"><em>Coverage</em>:<a href="#section-3.6-1.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.5">
+            <p id="section-3.7-1.5.1"><em>Coverage</em>:<a href="#section-3.7-1.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-1.5.2.1">
-                <p id="section-3.6-1.5.2.1.1">Capabilities discovery via HTTP GET to /capabilities<a href="#section-3.6-1.5.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.7-1.5.2.1">
+                <p id="section-3.7-1.5.2.1.1">Capabilities discovery via HTTP GET to /capabilities<a href="#section-3.7-1.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.5.2.2">
-                <p id="section-3.6-1.5.2.2.1">Event publication via HTTP POST to /relay-notification<a href="#section-3.6-1.5.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.5.2.2">
+                <p id="section-3.7-1.5.2.2.1">Event publication via HTTP POST to /relay-notification<a href="#section-3.7-1.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.5.2.3">
-                <p id="section-3.6-1.5.2.3.1">Support for name-based CBOR encoding as described in this document<a href="#section-3.6-1.5.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.5.2.3">
+                <p id="section-3.7-1.5.2.3.1">Support for name-based CBOR encoding as described in this document<a href="#section-3.7-1.5.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-3.6-1.6">
-            <p id="section-3.6-1.6.1"><em>Version Compatibility</em>:
-The implementation is based on draft-ietf-netconf-https-notif-16 and draft-ietf-netconf-https-notif-cbor-00.<a href="#section-3.6-1.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.6">
+            <p id="section-3.7-1.6.1"><em>Version Compatibility</em>:
+The implementation is based on draft-ietf-netconf-https-notif-16 and draft-ietf-netconf-https-notif-cbor-00.<a href="#section-3.7-1.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-1.7">
-            <p id="section-3.6-1.7.1"><em>Licensing</em>:
-Freely distributable under an MIT-style license.<a href="#section-3.6-1.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.7">
+            <p id="section-3.7-1.7.1"><em>Licensing</em>:
+Freely distributable under an MIT-style license.<a href="#section-3.7-1.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.6-1.8">
-            <p id="section-3.6-1.8.1"><em>Implementation Experience</em>:<a href="#section-3.6-1.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.8">
+            <p id="section-3.7-1.8.1"><em>Implementation Experience</em>:<a href="#section-3.7-1.8.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-1.8.2.1">
-                <p id="section-3.6-1.8.2.1.1">Developed and demonstrated at IETF 121 and 122 Hackathon.<a href="#section-3.6-1.8.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.7-1.8.2.1">
+                <p id="section-3.7-1.8.2.1.1">Developed and demonstrated at IETF 121 and 122 Hackathon.<a href="#section-3.7-1.8.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.8.2.2">
-                <p id="section-3.6-1.8.2.2.1">Worked toward enabling CBOR encoding in the libyang library as part of the hackathon effort (<a href="https://datatracker.ietf.org/meeting/123/materials/slides-123-hackathon-sessd-adding-cbor-support-in-libyang-00">slides</a>).<a href="#section-3.6-1.8.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.8.2.2">
+                <p id="section-3.7-1.8.2.2.1">Worked toward enabling CBOR encoding in the libyang library as part of the hackathon effort (<a href="https://datatracker.ietf.org/meeting/123/materials/slides-123-hackathon-sessd-adding-cbor-support-in-libyang-00">slides</a>).<a href="#section-3.7-1.8.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.8.2.3">
-                <p id="section-3.6-1.8.2.3.1">Evaluated CBOR efficiency compared to JSON and XML in constrained environments.<a href="#section-3.6-1.8.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.8.2.3">
+                <p id="section-3.7-1.8.2.3.1">Evaluated CBOR efficiency compared to JSON and XML in constrained environments.<a href="#section-3.7-1.8.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.8.2.4">
-                <p id="section-3.6-1.8.2.4.1">Built tooling to simulate and measure notification transfer behavior over varying network conditions.<a href="#section-3.6-1.8.2.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.8.2.4">
+                <p id="section-3.7-1.8.2.4.1">Built tooling to simulate and measure notification transfer behavior over varying network conditions.<a href="#section-3.7-1.8.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.8.2.5">
-                <p id="section-3.6-1.8.2.5.1">Diagnostic encoding examples used for validation of CBOR structures.<a href="#section-3.6-1.8.2.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.8.2.5">
+                <p id="section-3.7-1.8.2.5.1">Diagnostic encoding examples used for validation of CBOR structures.<a href="#section-3.7-1.8.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-3.6-1.9">
-            <p id="section-3.6-1.9.1"><em>Contact Information</em>:<a href="#section-3.6-1.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.9">
+            <p id="section-3.7-1.9.1"><em>Contact Information</em>:<a href="#section-3.7-1.9.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-1.9.2.1">
-                <p id="section-3.6-1.9.2.1.1">Bharadwaja Meherrushi Chittapragada (meher.211cs216@nitk.edu.in)<a href="#section-3.6-1.9.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.7-1.9.2.1">
+                <p id="section-3.7-1.9.2.1.1">Bharadwaja Meherrushi Chittapragada (meher.211cs216@nitk.edu.in)<a href="#section-3.7-1.9.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.9.2.2">
-                <p id="section-3.6-1.9.2.2.1">Vartika T Rao (vartikatrao.211it077@nitk.edu.in)<a href="#section-3.6-1.9.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.9.2.2">
+                <p id="section-3.7-1.9.2.2.1">Vartika T Rao (vartikatrao.211it077@nitk.edu.in)<a href="#section-3.7-1.9.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.9.2.3">
-                <p id="section-3.6-1.9.2.3.1">Siddharth Bhat (sidbhat.211ee151@nitk.edu.in)<a href="#section-3.6-1.9.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.9.2.3">
+                <p id="section-3.7-1.9.2.3.1">Siddharth Bhat (sidbhat.211ee151@nitk.edu.in)<a href="#section-3.7-1.9.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.6-1.9.2.4">
-                <p id="section-3.6-1.9.2.4.1">Hayyan Arshad (hayyanarshad.211cs222@nitk.edu.in)<a href="#section-3.6-1.9.2.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.7-1.9.2.4">
+                <p id="section-3.7-1.9.2.4.1">Hayyan Arshad (hayyanarshad.211cs222@nitk.edu.in)<a href="#section-3.7-1.9.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-3.6-1.10">
-            <p id="section-3.6-1.10.1"><em>Last Updated</em>:
-July 24, 2025<a href="#section-3.6-1.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.7-1.10">
+            <p id="section-3.7-1.10.1"><em>Last Updated</em>:
+July 24, 2025<a href="#section-3.7-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1737,6 +1750,10 @@ Record:
 <dt id="I-D.draft-ietf-netconf-https-notif">[I-D.draft-ietf-netconf-https-notif]</dt>
       <dd>
 <span class="refAuthor">Jethanandani, M.</span> and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"An HTTPS-based Transport for YANG Notifications"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-https-notif-16</span>, <time datetime="2026-06-30" class="refDate">30 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netconf-https-notif-16">https://datatracker.ietf.org/doc/html/draft-ietf-netconf-https-notif-16</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5277">[RFC5277]</dt>
+      <dd>
+<span class="refAuthor">Chisholm, S.</span> and <span class="refAuthor">H. Trevino</span>, <span class="refTitle">"NETCONF Event Notifications"</span>, <span class="seriesInfo">RFC 5277</span>, <span class="seriesInfo">DOI 10.17487/RFC5277</span>, <time datetime="2008-07" class="refDate">July 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5277">https://www.rfc-editor.org/rfc/rfc5277</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8639">[RFC8639]</dt>
       <dd>
