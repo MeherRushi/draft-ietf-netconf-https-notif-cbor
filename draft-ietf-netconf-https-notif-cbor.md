@@ -61,7 +61,7 @@ informative:
 
 --- abstract
 
-This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes.
+This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBOR encoding for YANG notifications over HTTPS transport in addition to the existing JSON and XML encoding schemes.
 
 
 --- middle
