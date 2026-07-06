@@ -325,64 +325,98 @@ A1                                      # map(1)
 
    Diagnostic Notation:
 
-      {
-       2601: {
-          1: "2013-12-21T00:01:00Z",
-          "example-mod:event" : {
-            "event-class" : "fault",
-            "reporting-entity" : { "card" : "Ethernet0" },
-            "severity" : "major"
-          }
-        }
-      }
+   {
+     2601: {                        / ietf-https-notif:notification (SID 2601) /
+       1: "2013-12-21T00:01:00Z",   / eventTime (SID 2602) /
+       57400: {                     / example-mod:event (SID 60001) /
+         1: "fault",                / event-class (SID 60002) /
+         2: {                       / reporting-entity (SID 60003) /
+           1: "Ethernet0"           / card (SID 60004) /
+         },
+         4: "major"                 / severity (SID 60005) /
+       }
+     }
+   }
 
-   The above is assuming the YANG module for event notifications has a
-   corresponding .sid file with these entries
+   The above assumes that the YANG modules for the notification envelope
+   and for the event have corresponding .sid files with the following
+   entries:
 
    "item": [
          {
            "namespace": "module",
-           "identifier": "ietf-notification",
+           "identifier": "ietf-https-notif",
            "sid": "2600"
          },
          {
            "namespace": "data",
-           "identifier": "/ietf-notification:notification",
+           "identifier": "/ietf-https-notif:notification",
            "sid": "2601"
          },
          {
            "namespace": "data",
-           "identifier": "/ietf-notification:notification/eventTime",
+           "identifier": "/ietf-https-notif:notification/eventTime",
            "sid": "2602"
+         },
+         {
+           "namespace": "module",
+           "identifier": "example-mod",
+           "sid": "60000"
+         },
+         {
+           "namespace": "data",
+           "identifier": "/example-mod:event",
+           "sid": "60001"
+         },
+         {
+           "namespace": "data",
+           "identifier": "/example-mod:event/event-class",
+           "sid": "60002"
+         },
+         {
+           "namespace": "data",
+           "identifier": "/example-mod:event/reporting-entity",
+           "sid": "60003"
+         },
+         {
+           "namespace": "data",
+           "identifier": "/example-mod:event/reporting-entity/card",
+           "sid": "60004"
+         },
+         {
+           "namespace": "data",
+           "identifier": "/example-mod:event/severity",
+           "sid": "60005"
          }
        ]
+
+   Keys are encoded as SID deltas relative to the reference SID of the
+   enclosing map, as defined in Section 3.2 of [RFC9254].  Because
+   "example-mod:event" is defined in a different module than its parent,
+   its delta is large (60001 - 2601 = 57400); alternatively, it MAY be
+   encoded as an absolute SID using CBOR tag 47.
 
    CBOR Encoding:
 
 A1                                      # map(1)
-   19 0A28                              # unsigned(2600)
+   19 0A29                              # unsigned(2601)
    A2                                   # map(2)
       01                                # unsigned(1)
       74                                # text(20)
          323031332D31322D32315430303A30313A30305A # "2013-12-21T00:01:00Z"
-      71                                # text(17)
-         6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
+      19 E038                           # unsigned(57400)
       A3                                # map(3)
-         68                             # text(8)
-            7365766572697479            # "severity"
-         65                             # text(5)
-            6D616A6F72                  # "major"
-         6B                             # text(11)
-            6576656E742D636C617373      # "event-class"
+         01                             # unsigned(1)
          65                             # text(5)
             6661756C74                  # "fault"
-         70                             # text(16)
-            7265706F7274696E672D656E74697479 # "reporting-entity"
+         02                             # unsigned(2)
          A1                             # map(1)
-            64                          # text(4)
-               63617264                 # "card"
+            01                          # unsigned(1)
             69                          # text(9)
                45746865726E657430       # "Ethernet0"
+         04                             # unsigned(4)
+         65                             # text(5)
+            6D616A6F72                  # "major"
 
 3.4.  Relay Notification Response
 
