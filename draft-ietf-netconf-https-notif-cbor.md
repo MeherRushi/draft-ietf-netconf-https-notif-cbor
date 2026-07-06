@@ -59,7 +59,7 @@ normative:
 
 --- abstract
 
-This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes.
+This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBOR encoding for YANG notifications over HTTPS transport in addition to the existing JSON and XML encoding schemes.
 
 
 --- middle
@@ -80,7 +80,7 @@ Examples of the GET and POST request and reply encoded in CBOR are also provided
 
 # Terminology
 
-This document uses the following terms defined in Section 2,3 and 4 of {{!I-D.draft-ietf-netconf-https-notif}}:
+This document uses the following terms defined in Sections 2, 3, and 4 of {{!I-D.draft-ietf-netconf-https-notif}}:
 
    - Capabilities Resource
 
@@ -106,7 +106,7 @@ The following term(s) are defined in Encoding of Data Modeled with YANG in the C
 
 # CBOR Encoding of the notification(s)
 
-YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 3.4 and 4.3 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID values as shown in {{sid-keys}}.
+YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 4.1 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.
 
 The "application/yang-data+cbor" media type used throughout this document is defined in Section 9 of {{!RFC9254}}. That registration also defines the "id" parameter: "application/yang-data+cbor; id=name" for the name-based keys described in this document, and "application/yang-data+cbor; id=sid" for the SID-based keys.
 
@@ -124,7 +124,7 @@ GET /some/path/capabilities HTTP/1.1
 
  If the receiver is able to reply using “application/yang-data+cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this
 
-### CBOR using names as keys
+### CBOR using names as keys (receiver accepts CBOR only)
 
 ~~~ http-message
    HTTP/1.1 200 OK
@@ -162,7 +162,7 @@ A1                                      # map(1)
 
 If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:
 
-### CBOR using names as keys
+### CBOR using names as keys (receiver accepts JSON and XML)
 
 ~~~ http-message
    HTTP/1.1 200 OK
@@ -201,7 +201,7 @@ A1                                      # map(1)
             75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A786D6C # "urn:ietf:params:yang-notif:https-capability:encoding:xml"
 ~~~
 
- If the receiver is unable to reply using "application/yang-data+cbor", but is capable of receiving only cbor then the response might look like this:
+If the receiver cannot encode the capabilities response in "application/yang-data+cbor" but is itself only able to receive CBOR-encoded notifications, it replies using JSON (or XML) while still advertising the CBOR capability:
 
 ~~~ http-message
    HTTP/1.1 200 OK
@@ -209,6 +209,7 @@ A1                                      # map(1)
    Server: example-server
    Cache-Control: no-cache
    Content-Type: application/yang-data+json
+
    {
    "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
@@ -384,6 +385,12 @@ A1                                      # map(1)
 ## Relay Notification Response
 
 The response on success SHOULD be from the 2XX class of codes. In case of corrupted or malformed event, the response SHOULD be an appropriate HTTP error response.
+
+## Legacy RFC 5277 Notifications
+
+{{!I-D.draft-ietf-netconf-https-notif}} defines optional support for sending legacy notifications, as defined in NETCONF Event Notifications {{!RFC5277}}, using the "application/xml" media type. This legacy mode exists for interoperability with publishers that are not aware of YANG media types; a receiver advertises support for it using the "urn:ietf:params:yang-notif:https-capability:rfc5277-notif" capability.
+
+The CBOR encoding defined in this document applies to YANG-modeled notifications, including the eventTime envelope, and is advertised using the "urn:ietf:params:yang-notif:https-capability:encoding:cbor" capability registered by this document. Because {{!I-D.draft-ietf-netconf-https-notif}} defines the legacy RFC 5277 mode as XML-only, this document does not define a CBOR variant of it. A publisher that is able to produce CBOR is YANG-aware and therefore uses the CBOR encoding described here rather than the legacy mode.
 
 ## Implementation Status
 
