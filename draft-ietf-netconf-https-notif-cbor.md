@@ -106,7 +106,7 @@ The following term(s) are defined in Encoding of Data Modeled with YANG in the C
 
 # CBOR Encoding of the notification(s)
 
-YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 3.4 and 4.3 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.
+YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 3.4 and 4.3 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID values as shown in {{sid-keys}}.
 
 The "application/yang-data+cbor" media type used throughout this document is defined in Section 9 of {{!RFC9254}}. That registration also defines the "id" parameter: "application/yang-data+cbor; id=name" for the name-based keys described in this document, and "application/yang-data+cbor; id=sid" for the SID-based keys.
 
@@ -259,10 +259,6 @@ A1                                      # map(1)
       71                                # text(17)
          6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
       A3                                # map(3)
-         68                             # text(8)
-            7365766572697479            # "severity"
-         65                             # text(5)
-            6D616A6F72                  # "major"
          6B                             # text(11)
             6576656E742D636C617373      # "event-class"
          65                             # text(5)
@@ -274,9 +270,13 @@ A1                                      # map(1)
                63617264                 # "card"
             69                          # text(9)
                45746865726E657430       # "Ethernet0"
+         68                             # text(8)
+            7365766572697479            # "severity"
+         65                             # text(5)
+            6D616A6F72                  # "major"
 ~~~
 
-### CBOR encoding using SIDs as keys
+### CBOR encoding using SIDs as keys {#sid-keys}
 
 ~~~ http-request
 POST /some/path/relay-notification HTTP/1.1
@@ -352,6 +352,8 @@ The above assumes that the YANG modules for the notification envelope and for th
       }
     ]
 ~~~
+
+The SID values shown above are illustrative examples only; they are not SIDs registered for any real YANG module. A deployment uses the SIDs actually assigned to the modules involved.
 
 Keys are encoded as SID deltas relative to the reference SID of the enclosing map, as defined in Section 3.2 of {{!RFC9254}}. Because "example-mod:event" is defined in a different module than its parent, its delta is large (60001 - 2601 = 57400); alternatively, it MAY be encoded as an absolute SID using CBOR tag 47.
 
@@ -440,7 +442,7 @@ This document requests that IANA include an additional entry in the “Capabilit
 ~~~
 Record:
    URN:         urn:ietf:params:yang-notif:https-capability:encoding:cbor
-   Reference:   RFC XXXX:An HTTPS-based Transport for YANG Notifications
+   Reference:   RFC XXXX: CBOR Encoding for HTTPS-based YANG Notifications Transport
    Description: Identifies support for CBOR-encoded notifications.
 ~~~
 
