@@ -201,7 +201,7 @@ A1                                      # map(1)
             75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A786D6C # "urn:ietf:params:yang-notif:https-capability:encoding:xml"
 ~~~
 
- If the receiver is unable to reply using "application/yang-data+cbor", but is capable of receiving only cbor then the response might look like this:
+If the receiver cannot encode the capabilities response in "application/yang-data+cbor" but is itself only able to receive CBOR-encoded notifications, it replies using JSON (or XML) while still advertising the CBOR capability:
 
 ~~~ http-message
    HTTP/1.1 200 OK
@@ -209,6 +209,7 @@ A1                                      # map(1)
    Server: example-server
    Cache-Control: no-cache
    Content-Type: application/yang-data+json
+
    {
    "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
