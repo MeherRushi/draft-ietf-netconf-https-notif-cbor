@@ -61,7 +61,7 @@ informative:
 
 --- abstract
 
-This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBOR encoding for YANG notifications over HTTPS Transport in addition to the existing JSON and XML encoding schemes.
+This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBOR encoding for YANG notifications over HTTPS transport in addition to the existing JSON and XML encoding schemes.
 
 
 --- middle
@@ -75,14 +75,14 @@ CBOR offers an efficient and compact representation of YANG.
 This document introduces a CBOR encoding scheme for event notifications over HTTPS by using the framework proposed in {{!I-D.draft-ietf-netconf-https-notif}} which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.
 
 
-In {{!I-D.draft-ietf-netconf-https-notif}}, the capabilities HTTP-target resource allows a publisher to retrieve supported encoding formats via GET requests, while the relay-notification resource enables the publisher to send YANG notifications via POST requests. These requests and responses use different content types based on the selected encoding scheme. This document defines support for using CBOR encoding defined in section 1 of {{!I-D.draft-ietf-netconf-https-notif}}
+In {{!I-D.draft-ietf-netconf-https-notif}}, the capabilities HTTP-target resource allows a publisher to retrieve supported encoding formats via GET requests, while the relay-notification resource enables the publisher to send YANG notifications via POST requests. These requests and responses use different content types based on the selected encoding scheme. This document defines support for CBOR encoding, in addition to the JSON and XML encodings defined in {{!I-D.draft-ietf-netconf-https-notif}}.
 
 Examples of the GET and POST request and reply encoded in CBOR are also provided.
 
 
 # Terminology
 
-This document uses the following terms defined in Section 2,3 and 4 of {{!I-D.draft-ietf-netconf-https-notif}}:
+This document uses the following terms defined in Sections 2, 3, and 4 of {{!I-D.draft-ietf-netconf-https-notif}}:
 
    - Capabilities Resource
 
@@ -100,7 +100,7 @@ The following term(s) are defined in Subscription to YANG Notifications {{!RFC86
 
 The following term(s) are defined in Encoding of Data Modeled with YANG in the Concise Binary Object Representation (CBOR) {{!RFC9254}}:
 
-   - Diagnostic Notifications
+   - Diagnostic Notation
 
    - YANG Schema Item iDentifier (or "YANG SID" or simply "SID"): 63-bit unsigned integer used to identify different YANG items.
 
@@ -110,6 +110,8 @@ The following term(s) are defined in Encoding of Data Modeled with YANG in the C
 
 YANG notifications can be encoded in CBOR using Names or SIDs in keys. Notifications encoded using names is similar to JSON encoding as defined in Section 4.1 of {{!I-D.draft-ietf-netconf-https-notif}}. Notification encoded using YANG-SIDs replaces the names of the keys of the CBOR encoded message with a 63 bit unsigned integer.  In this case, the term 'SID' is defined in Section 3.2 of {{!RFC9254}}, and the keys of the encoded data use SID value as mentioned in 4.3.2 of this document.
 
+The "application/yang-data+cbor" media type used throughout this document is defined in Section 9 of {{!RFC9254}}. That registration also defines the "id" parameter: "application/yang-data+cbor; id=name" for the name-based keys described in this document, and "application/yang-data+cbor; id=sid" for the SID-based keys.
+
 ## Capabilities Request
 
 The publisher sends a request to the receiver to learn its capabilities. In the below example, the “Accept” states that the publisher wants to receive the capabilities response in CBOR but if not supported then in XML or JSON in that order.
@@ -117,21 +119,21 @@ The publisher sends a request to the receiver to learn its capabilities. In the 
 ~~~ http-request
 GET /some/path/capabilities HTTP/1.1
    Host: example.com
-   Accept: application/yang-data+cbor, application/yang-data+xml;0.5, application/yang-data+json;q=0.9
+   Accept: application/yang-data+cbor; id=name, application/yang-data+xml;q=0.9, application/yang-data+json;q=0.5
 ~~~
 
 ## Capabilities Response
 
  If the receiver is able to reply using “application/yang-data+cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this
 
-### CBOR using names as keys
+### CBOR using names as keys (receiver accepts CBOR only)
 
 ~~~ http-message
    HTTP/1.1 200 OK
    Date: Tue, 4 March 2025 20:33:30 GMT
    Server: example-server
    Cache-Control: no-cache
-   Content-Type: application/yang-data+cbor
+   Content-Type: application/yang-data+cbor; id=name
 ~~~
 
 Diagnostic Notation:
@@ -162,14 +164,14 @@ A1                                      # map(1)
 
 If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:
 
-### CBOR using names as keys
+### CBOR using names as keys (receiver accepts JSON and XML)
 
 ~~~ http-message
    HTTP/1.1 200 OK
    Date: Tue, 4 March 2025 20:33:30 GMT
    Server: example-server
    Cache-Control: no-cache
-   Content-Type: application/yang-data+cbor
+   Content-Type: application/yang-data+cbor; id=name
 ~~~
 
 Diagnostic Notation:
@@ -201,7 +203,7 @@ A1                                      # map(1)
             75726E3A696574663A706172616D733A79616E672D6E6F7469663A68747470732D6361706162696C6974793A656E636F64696E673A786D6C # "urn:ietf:params:yang-notif:https-capability:encoding:xml"
 ~~~
 
- If the receiver is unable to reply using "application/yang-data+cbor", but is capable of receiving only cbor then the response might look like this:
+If the receiver cannot encode the capabilities response in "application/yang-data+cbor" but is itself only able to receive CBOR-encoded notifications, it replies using JSON (or XML) while still advertising the CBOR capability:
 
 ~~~ http-message
    HTTP/1.1 200 OK
@@ -209,6 +211,7 @@ A1                                      # map(1)
    Server: example-server
    Cache-Control: no-cache
    Content-Type: application/yang-data+json
+
    {
    "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
@@ -220,17 +223,17 @@ A1                                      # map(1)
 
 ##  Relay Notification request
 
-The publisher sends an HTTP POST request to the "relay-notification" resource on the receiver with the "Content-Type" header set to "application/yang-data+cbor" in case the receiver is CBOR capable and a body containing the notification encoded in CBOR.
+The publisher sends an HTTP POST request to the "relay-notification" resource on the receiver with the "Content-Type" header set to "application/yang-data+cbor" in case the receiver is CBOR capable and a body containing the notification encoded in CBOR. The "id" parameter of the media type indicates whether the keys are encoded as names ("id=name") or as SIDs ("id=sid").
 
 ### CBOR encoding using names as keys
 
 ~~~ http-request
 POST /some/path/relay-notification HTTP/1.1
    Host: example.com
-   Content-Type: application/yang-data+cbor
+   Content-Type: application/yang-data+cbor; id=name
 ~~~
 
-Diagnostic notation:
+Diagnostic Notation:
 
 ~~~ http-response
    {
@@ -245,7 +248,7 @@ Diagnostic notation:
    }
 ~~~
 
-Cbor Encoding:
+CBOR Encoding:
 
 ~~~
 A1                                      # map(1)
@@ -278,75 +281,116 @@ A1                                      # map(1)
 
 ### CBOR encoding using SIDs as keys
 
+~~~ http-request
+POST /some/path/relay-notification HTTP/1.1
+   Host: example.com
+   Content-Type: application/yang-data+cbor; id=sid
+~~~
+
 Diagnostic Notation:
 
-~~~ http-response
+~~~
    {
-    2601: {
-       1: "2013-12-21T00:01:00Z",
-       "example-mod:event" : {
-         "event-class" : "fault",
-         "reporting-entity" : { "card" : "Ethernet0" },
-         "severity" : "major"
+     2601: {                        / ietf-https-notif:notification (SID 2601) /
+       1: "2013-12-21T00:01:00Z",   / eventTime (SID 2602) /
+       57400: {                     / example-mod:event (SID 60001) /
+         1: "fault",                / event-class (SID 60002) /
+         2: {                       / reporting-entity (SID 60003) /
+           1: "Ethernet0"           / card (SID 60004) /
+         },
+         4: "major"                 / severity (SID 60005) /
        }
      }
    }
 ~~~
 
-The above is assuming the YANG module for event notifications has a corresponding .sid file with these entries
+The above assumes that the YANG modules for the notification envelope and for the event have corresponding .sid files with the following entries:
 
 ~~~
 "item": [
       {
         "namespace": "module",
-        "identifier": "ietf-notification",
+        "identifier": "ietf-https-notif",
         "sid": "2600"
       },
       {
         "namespace": "data",
-        "identifier": "/ietf-notification:notification",
+        "identifier": "/ietf-https-notif:notification",
         "sid": "2601"
       },
       {
         "namespace": "data",
-        "identifier": "/ietf-notification:notification/eventTime",
+        "identifier": "/ietf-https-notif:notification/eventTime",
         "sid": "2602"
+      },
+      {
+        "namespace": "module",
+        "identifier": "example-mod",
+        "sid": "60000"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-mod:event",
+        "sid": "60001"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-mod:event/event-class",
+        "sid": "60002"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-mod:event/reporting-entity",
+        "sid": "60003"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-mod:event/reporting-entity/card",
+        "sid": "60004"
+      },
+      {
+        "namespace": "data",
+        "identifier": "/example-mod:event/severity",
+        "sid": "60005"
       }
     ]
 ~~~
+
+Keys are encoded as SID deltas relative to the reference SID of the enclosing map, as defined in Section 3.2 of {{!RFC9254}}. Because "example-mod:event" is defined in a different module than its parent, its delta is large (60001 - 2601 = 57400); alternatively, it MAY be encoded as an absolute SID using CBOR tag 47.
 
 CBOR Encoding:
 
 ~~~
 A1                                      # map(1)
-   19 0A28                              # unsigned(2600)
+   19 0A29                              # unsigned(2601)
    A2                                   # map(2)
       01                                # unsigned(1)
       74                                # text(20)
          323031332D31322D32315430303A30313A30305A # "2013-12-21T00:01:00Z"
-      71                                # text(17)
-         6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
+      19 E038                           # unsigned(57400)
       A3                                # map(3)
-         68                             # text(8)
-            7365766572697479            # "severity"
-         65                             # text(5)
-            6D616A6F72                  # "major"
-         6B                             # text(11)
-            6576656E742D636C617373      # "event-class"
+         01                             # unsigned(1)
          65                             # text(5)
             6661756C74                  # "fault"
-         70                             # text(16)
-            7265706F7274696E672D656E74697479 # "reporting-entity"
+         02                             # unsigned(2)
          A1                             # map(1)
-            64                          # text(4)
-               63617264                 # "card"
+            01                          # unsigned(1)
             69                          # text(9)
                45746865726E657430       # "Ethernet0"
+         04                             # unsigned(4)
+         65                             # text(5)
+            6D616A6F72                  # "major"
 ~~~
 
 ## Relay Notification Response
 
-The response on success is  "204 (No Content)". In case of corrupted or malformed event, the response is an appropriate HTTP error response.
+The response on success SHOULD be from the 2XX class of codes. In case of corrupted or malformed event, the response SHOULD be an appropriate HTTP error response.
+
+## Legacy RFC 5277 Notifications
+
+{{!I-D.draft-ietf-netconf-https-notif}} defines optional support for sending legacy notifications, as defined in NETCONF Event Notifications {{!RFC5277}}, using the "application/xml" media type. This legacy mode exists for interoperability with publishers that are not aware of YANG media types; a receiver advertises support for it using the "urn:ietf:params:yang-notif:https-capability:rfc5277-notif" capability.
+
+The CBOR encoding defined in this document applies to YANG-modeled notifications, including the eventTime envelope, and is advertised using the "urn:ietf:params:yang-notif:https-capability:encoding:cbor" capability registered by this document. Because {{!I-D.draft-ietf-netconf-https-notif}} defines the legacy RFC 5277 mode as XML-only, this document does not define a CBOR variant of it. A publisher that is able to produce CBOR is YANG-aware and therefore uses the CBOR encoding described here rather than the legacy mode.
 
 ## Implementation Status
 
@@ -372,7 +416,7 @@ This section records the status of known implementations of the specification de
 
 
 - *Version Compatibility*:
-  The implementation is based on draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.
+  The implementation is based on draft-ietf-netconf-https-notif-16 and draft-ietf-netconf-https-notif-cbor-00.
 
 - *Licensing*:
   Freely distributable under an MIT-style license.
@@ -396,7 +440,7 @@ This section records the status of known implementations of the specification de
 
 # Security Considerations
 
-Addition of the CBOR encoding introduces no specific security exposures or risks other that the ones mentioned in {{!RFC9254}} and {{!I-D.draft-ietf-netconf-https-notif}} (An HTTPS-based Transport for YANG Notifications)
+Addition of the CBOR encoding introduces no specific security exposures or risks other than the ones mentioned in {{!RFC9254}} and {{!I-D.draft-ietf-netconf-https-notif}} (An HTTPS-based Transport for YANG Notifications).
 
 # IANA Considerations
 
