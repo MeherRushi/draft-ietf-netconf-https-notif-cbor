@@ -82,8 +82,9 @@ Table of Contents
        3.3.1.  CBOR encoding using names as keys
        3.3.2.  CBOR encoding using SIDs as keys
      3.4.  Relay Notification Response
-     3.5.  Implementation Status
-     3.6.  Implementation: HTTPS Notification CBOR Draft
+     3.5.  Legacy RFC 5277 Notifications
+     3.6.  Implementation Status
+     3.7.  Implementation: HTTPS Notification CBOR Draft
            Implementation
    4.  Security Considerations
    5.  IANA Considerations
@@ -424,7 +425,26 @@ A1                                      # map(1)
    case of corrupted or malformed event, the response SHOULD be an
    appropriate HTTP error response.
 
-3.5.  Implementation Status
+3.5.  Legacy RFC 5277 Notifications
+
+   [I-D.draft-ietf-netconf-https-notif] defines optional support for
+   sending legacy notifications, as defined in NETCONF Event
+   Notifications [RFC5277], using the "application/xml" media type.
+   This legacy mode exists for interoperability with publishers that are
+   not aware of YANG media types; a receiver advertises support for it
+   using the "urn:ietf:params:yang-notif:https-capability:rfc5277-notif"
+   capability.
+
+   The CBOR encoding defined in this document applies to YANG-modeled
+   notifications, including the eventTime envelope, and is advertised
+   using the "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
+   capability registered by this document.  Because
+   [I-D.draft-ietf-netconf-https-notif] defines the legacy RFC 5277 mode
+   as XML-only, this document does not define a CBOR variant of it.  A
+   publisher that is able to produce CBOR is YANG-aware and therefore
+   uses the CBOR encoding described here rather than the legacy mode.
+
+3.6.  Implementation Status
 
    This section records the status of known implementations of the
    specification defined by this document at the time of posting.  The
@@ -432,7 +452,7 @@ A1                                      # map(1)
    and implementability of the specification.  This section will be
    removed prior to publication as an RFC.
 
-3.6.  Implementation: HTTPS Notification CBOR Draft Implementation
+3.7.  Implementation: HTTPS Notification CBOR Draft Implementation
 
    *  _Organization_: National Institute of Technology Karnataka
 
@@ -523,6 +543,10 @@ Record:
               draft-ietf-netconf-https-notif-16, 30 June 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-netconf-
               https-notif-16>.
+
+   [RFC5277]  Chisholm, S. and H. Trevino, "NETCONF Event
+              Notifications", RFC 5277, DOI 10.17487/RFC5277, July 2008,
+              <https://www.rfc-editor.org/rfc/rfc5277>.
 
    [RFC8639]  Voit, E., Clemm, A., Gonzalez Prieto, A., Nilsen-Nygaard,
               E., and A. Tripathy, "Subscription to YANG Notifications",
