@@ -52,11 +52,9 @@ author:
 
 normative:
  I-D.draft-ietf-netconf-https-notif:
+ RFC8639:
  RFC8949:
  RFC9254:
-
-informative:
- RFC3553:
 
 
 --- abstract
@@ -72,7 +70,7 @@ This document extends {{!I-D.draft-ietf-netconf-https-notif}} by introducing CBO
 CBOR offers an efficient and compact representation of YANG.
 ~~~~
 
-This document introduces a CBOR encoding scheme for event notifications over HTTPS by using the framework proposed in {{!I-D.draft-ietf-netconf-https-notif}} which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.
+This document introduces a CBOR {{!RFC8949}} encoding scheme for event notifications over HTTPS by using the framework proposed in {{!I-D.draft-ietf-netconf-https-notif}} which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.
 
 
 In {{!I-D.draft-ietf-netconf-https-notif}}, the capabilities HTTP-target resource allows a publisher to retrieve supported encoding formats via GET requests, while the relay-notification resource enables the publisher to send YANG notifications via POST requests. These requests and responses use different content types based on the selected encoding scheme. This document defines support for CBOR encoding, in addition to the JSON and XML encodings defined in {{!I-D.draft-ietf-netconf-https-notif}}.
