@@ -89,9 +89,7 @@ Table of Contents
            Implementation
    4.  Security Considerations
    5.  IANA Considerations
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   6.  Normative References
    Acknowledgments
    Authors' Addresses
 
@@ -99,7 +97,7 @@ Table of Contents
 
    CBOR offers an efficient and compact representation of YANG.
 
-   This document introduces a CBOR encoding scheme for event
+   This document introduces a CBOR [RFC8949] encoding scheme for event
    notifications over HTTPS by using the framework proposed in
    [I-D.draft-ietf-netconf-https-notif] which supports transfer of YANG
    notifications over HTTPS using JSON and XML encoding schemes.
@@ -305,10 +303,6 @@ A1                                      # map(1)
       71                                # text(17)
          6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
       A3                                # map(3)
-         68                             # text(8)
-            7365766572697479            # "severity"
-         65                             # text(5)
-            6D616A6F72                  # "major"
          6B                             # text(11)
             6576656E742D636C617373      # "event-class"
          65                             # text(5)
@@ -320,6 +314,10 @@ A1                                      # map(1)
                63617264                 # "card"
             69                          # text(9)
                45746865726E657430       # "Ethernet0"
+         68                             # text(8)
+            7365766572697479            # "severity"
+         65                             # text(5)
+            6D616A6F72                  # "major"
 
 3.3.2.  CBOR encoding using SIDs as keys
 
@@ -393,6 +391,10 @@ A1                                      # map(1)
            "sid": "60005"
          }
        ]
+
+   The SID values shown above are illustrative examples only; they are
+   not SIDs registered for any real YANG module.  A deployment uses the
+   SIDs actually assigned to the modules involved.
 
    Keys are encoded as SID deltas relative to the reference SID of the
    enclosing map, as defined in Section 3.2 of [RFC9254].  Because
@@ -533,12 +535,10 @@ A1                                      # map(1)
 
 Record:
    URN:         urn:ietf:params:yang-notif:https-capability:encoding:cbor
-   Reference:   RFC XXXX:An HTTPS-based Transport for YANG Notifications
+   Reference:   RFC XXXX: CBOR Encoding for HTTPS-based YANG Notifications Transport
    Description: Identifies support for CBOR-encoded notifications.
 
-6.  References
-
-6.1.  Normative References
+6.  Normative References
 
    [I-D.draft-ietf-netconf-https-notif]
               Jethanandani, M. and K. Watsen, "An HTTPS-based Transport
@@ -566,13 +566,6 @@ Record:
               in the Concise Binary Object Representation (CBOR)",
               RFC 9254, DOI 10.17487/RFC9254, July 2022,
               <https://www.rfc-editor.org/rfc/rfc9254>.
-
-6.2.  Informative References
-
-   [RFC3553]  Mealling, M., Masinter, L., Hardie, T., and G. Klyne, "An
-              IETF URN Sub-namespace for Registered Protocol
-              Parameters", BCP 73, RFC 3553, DOI 10.17487/RFC3553, June
-              2003, <https://www.rfc-editor.org/rfc/rfc3553>.
 
 Acknowledgments
 

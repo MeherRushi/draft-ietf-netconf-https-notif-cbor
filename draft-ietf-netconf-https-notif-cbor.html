@@ -1222,15 +1222,7 @@ svg {
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
@@ -1252,7 +1244,7 @@ svg {
 CBOR offers an efficient and compact representation of YANG.
 </pre><a href="#section-1-1" class="pilcrow">¶</a>
 </div>
-<p id="section-1-2">This document introduces a CBOR encoding scheme for event notifications over HTTPS by using the framework proposed in <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document introduces a CBOR <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> encoding scheme for event notifications over HTTPS by using the framework proposed in <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span> which supports transfer of YANG notifications over HTTPS using JSON and XML encoding schemes.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">In <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>, the capabilities HTTP-target resource allows a publisher to retrieve supported encoding formats via GET requests, while the relay-notification resource enables the publisher to send YANG notifications via POST requests. These requests and responses use different content types based on the selected encoding scheme. This document defines support for CBOR encoding, in addition to the JSON and XML encodings defined in <span>[<a href="#I-D.draft-ietf-netconf-https-notif" class="cite xref">I-D.draft-ietf-netconf-https-notif</a>]</span>.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">Examples of the GET and POST request and reply encoded in CBOR are also provided.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
@@ -1480,10 +1472,6 @@ A1                                      # map(1)
       71                                # text(17)
          6578616D706C652D6D6F643A6576656E74 # "example-mod:event"
       A3                                # map(3)
-         68                             # text(8)
-            7365766572697479            # "severity"
-         65                             # text(5)
-            6D616A6F72                  # "major"
          6B                             # text(11)
             6576656E742D636C617373      # "event-class"
          65                             # text(5)
@@ -1495,11 +1483,15 @@ A1                                      # map(1)
                63617264                 # "card"
             69                          # text(9)
                45746865726E657430       # "Ethernet0"
+         68                             # text(8)
+            7365766572697479            # "severity"
+         65                             # text(5)
+            6D616A6F72                  # "major"
 </pre><a href="#section-3.3.1-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="cbor-encoding-using-sids-as-keys">
+<div id="sid-keys">
 <section id="section-3.3.2">
           <h4 id="name-cbor-encoding-using-sids-as">
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-cbor-encoding-using-sids-as" class="section-name selfRef">CBOR encoding using SIDs as keys</a>
@@ -1580,9 +1572,10 @@ POST /some/path/relay-notification HTTP/1.1
     ]
 </pre><a href="#section-3.3.2-5" class="pilcrow">¶</a>
 </div>
-<p id="section-3.3.2-6">Keys are encoded as SID deltas relative to the reference SID of the enclosing map, as defined in Section 3.2 of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>. Because "example-mod:event" is defined in a different module than its parent, its delta is large (60001 - 2601 = 57400); alternatively, it MAY be encoded as an absolute SID using CBOR tag 47.<a href="#section-3.3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-7">CBOR Encoding:<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.3.2-8">
+<p id="section-3.3.2-6">The SID values shown above are illustrative examples only; they are not SIDs registered for any real YANG module. A deployment uses the SIDs actually assigned to the modules involved.<a href="#section-3.3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-7">Keys are encoded as SID deltas relative to the reference SID of the enclosing map, as defined in Section 3.2 of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>. Because "example-mod:event" is defined in a different module than its parent, its delta is large (60001 - 2601 = 57400); alternatively, it MAY be encoded as an absolute SID using CBOR tag 47.<a href="#section-3.3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-8">CBOR Encoding:<a href="#section-3.3.2-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.2-9">
 <pre>
 A1                                      # map(1)
    19 0A29                              # unsigned(2601)
@@ -1603,7 +1596,7 @@ A1                                      # map(1)
          04                             # unsigned(4)
          65                             # text(5)
             6D616A6F72                  # "major"
-</pre><a href="#section-3.3.2-8" class="pilcrow">¶</a>
+</pre><a href="#section-3.3.2-9" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1742,59 +1735,39 @@ July 24, 2025<a href="#section-3.7-1.10.1" class="pilcrow">¶</a></p>
 <pre>
 Record:
    URN:         urn:ietf:params:yang-notif:https-capability:encoding:cbor
-   Reference:   RFC XXXX:An HTTPS-based Transport for YANG Notifications
+   Reference:   RFC XXXX: CBOR Encoding for HTTPS-based YANG Notifications Transport
    Description: Identifies support for CBOR-encoded notifications.
 </pre><a href="#section-5-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="sec-combined-references">
-<section id="section-6">
-      <h2 id="name-references">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
-      </h2>
 <div id="sec-normative-references">
-<section id="section-6.1">
-        <h3 id="name-normative-references">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-        </h3>
+<section id="section-6">
+      <h2 id="name-normative-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
 <dl class="references">
 <dt id="I-D.draft-ietf-netconf-https-notif">[I-D.draft-ietf-netconf-https-notif]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Jethanandani, M.</span> and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"An HTTPS-based Transport for YANG Notifications"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-https-notif-16</span>, <time datetime="2026-06-30" class="refDate">30 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netconf-https-notif-16">https://datatracker.ietf.org/doc/html/draft-ietf-netconf-https-notif-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5277">[RFC5277]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Chisholm, S.</span> and <span class="refAuthor">H. Trevino</span>, <span class="refTitle">"NETCONF Event Notifications"</span>, <span class="seriesInfo">RFC 5277</span>, <span class="seriesInfo">DOI 10.17487/RFC5277</span>, <time datetime="2008-07" class="refDate">July 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5277">https://www.rfc-editor.org/rfc/rfc5277</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8639">[RFC8639]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Voit, E.</span>, <span class="refAuthor">Clemm, A.</span>, <span class="refAuthor">Gonzalez Prieto, A.</span>, <span class="refAuthor">Nilsen-Nygaard, E.</span>, and <span class="refAuthor">A. Tripathy</span>, <span class="refTitle">"Subscription to YANG Notifications"</span>, <span class="seriesInfo">RFC 8639</span>, <span class="seriesInfo">DOI 10.17487/RFC8639</span>, <time datetime="2019-09" class="refDate">September 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8639">https://www.rfc-editor.org/rfc/rfc8639</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8949">[RFC8949]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9254">[RFC9254]</dt>
-      <dd>
+    <dd>
 <span class="refAuthor">Veillette, M., Ed.</span>, <span class="refAuthor">Petrov, I., Ed.</span>, <span class="refAuthor">Pelov, A.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Encoding of Data Modeled with YANG in the Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 9254</span>, <span class="seriesInfo">DOI 10.17487/RFC9254</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9254">https://www.rfc-editor.org/rfc/rfc9254</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
-</section>
-</div>
-<div id="sec-informative-references">
-<section id="section-6.2">
-        <h3 id="name-informative-references">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
-        </h3>
-<dl class="references">
-<dt id="RFC3553">[RFC3553]</dt>
-      <dd>
-<span class="refAuthor">Mealling, M.</span>, <span class="refAuthor">Masinter, L.</span>, <span class="refAuthor">Hardie, T.</span>, and <span class="refAuthor">G. Klyne</span>, <span class="refTitle">"An IETF URN Sub-namespace for Registered Protocol Parameters"</span>, <span class="seriesInfo">BCP 73</span>, <span class="seriesInfo">RFC 3553</span>, <span class="seriesInfo">DOI 10.17487/RFC3553</span>, <time datetime="2003-06" class="refDate">June 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3553">https://www.rfc-editor.org/rfc/rfc3553</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-</dl>
-</section>
-</div>
 </section>
 </div>
 <div id="acknowledgments">
