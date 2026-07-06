@@ -87,9 +87,7 @@ Table of Contents
            Implementation
    4.  Security Considerations
    5.  IANA Considerations
-   6.  References
-     6.1.  Normative References
-     6.2.  Informative References
+   6.  Normative References
    Acknowledgments
    Authors' Addresses
 
@@ -97,7 +95,7 @@ Table of Contents
 
    CBOR offers an efficient and compact representation of YANG.
 
-   This document introduces a CBOR encoding scheme for event
+   This document introduces a CBOR [RFC8949] encoding scheme for event
    notifications over HTTPS by using the framework proposed in
    [I-D.draft-ietf-netconf-https-notif] which supports transfer of YANG
    notifications over HTTPS using JSON and XML encoding schemes.
@@ -513,9 +511,7 @@ Record:
    Reference:   RFC XXXX:An HTTPS-based Transport for YANG Notifications
    Description: Identifies support for CBOR-encoded notifications.
 
-6.  References
-
-6.1.  Normative References
+6.  Normative References
 
    [I-D.draft-ietf-netconf-https-notif]
               Jethanandani, M. and K. Watsen, "An HTTPS-based Transport
@@ -539,13 +535,6 @@ Record:
               in the Concise Binary Object Representation (CBOR)",
               RFC 9254, DOI 10.17487/RFC9254, July 2022,
               <https://www.rfc-editor.org/rfc/rfc9254>.
-
-6.2.  Informative References
-
-   [RFC3553]  Mealling, M., Masinter, L., Hardie, T., and G. Klyne, "An
-              IETF URN Sub-namespace for Registered Protocol
-              Parameters", BCP 73, RFC 3553, DOI 10.17487/RFC3553, June
-              2003, <https://www.rfc-editor.org/rfc/rfc3553>.
 
 Acknowledgments
 
