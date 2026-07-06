@@ -82,7 +82,7 @@ Examples of the GET and POST request and reply encoded in CBOR are also provided
 
 # Terminology
 
-This document uses the following terms defined in Section 2,3 and 4 of {{!I-D.draft-ietf-netconf-https-notif}}:
+This document uses the following terms defined in Sections 2, 3, and 4 of {{!I-D.draft-ietf-netconf-https-notif}}:
 
    - Capabilities Resource
 
