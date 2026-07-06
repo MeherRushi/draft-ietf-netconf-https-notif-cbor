@@ -126,7 +126,7 @@ GET /some/path/capabilities HTTP/1.1
 
  If the receiver is able to reply using “application/yang-data+cbor” and assuming it is only capable of receiving CBOR encoded messages the response would look like this
 
-### CBOR using names as keys
+### CBOR using names as keys (receiver accepts CBOR only)
 
 ~~~ http-message
    HTTP/1.1 200 OK
@@ -164,7 +164,7 @@ A1                                      # map(1)
 
 If the receiver is able to reply using “application/yang-data+cbor” and assuming it is not capable of receiving cbor, but can receive both json and xml notifications:
 
-### CBOR using names as keys
+### CBOR using names as keys (receiver accepts JSON and XML)
 
 ~~~ http-message
    HTTP/1.1 200 OK
