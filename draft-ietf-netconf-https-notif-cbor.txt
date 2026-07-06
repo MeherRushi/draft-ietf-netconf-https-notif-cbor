@@ -146,7 +146,7 @@ Table of Contents
 3.  CBOR Encoding of the notification(s)
 
    YANG notifications can be encoded in CBOR using Names or SIDs in
-   keys.  Notifications encoded using names is similar to JSON encoding
+   keys.  Notifications encoded using names are similar to JSON encoding
    as defined in Section 3.4 and 4.3 of
    [I-D.draft-ietf-netconf-https-notif].  Notification encoded using
    YANG-SIDs replaces the names of the keys of the CBOR encoded message
