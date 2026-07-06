@@ -1339,7 +1339,7 @@ GET /some/path/capabilities HTTP/1.1
 <div class="alignLeft art-text artwork" id="section-3.2.1-3">
 <pre>
    {
-   "receiver-capabilities": {
+   "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
        "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
         ]
@@ -1351,8 +1351,8 @@ GET /some/path/capabilities HTTP/1.1
 <div class="alignLeft art-text artwork" id="section-3.2.1-5">
 <pre>
 A1                                      # map(1)
-   75                                   # text(21)
-      72656365697665722D6361706162696C6974696573 # "receiver-capabilities"
+   78 30                                # text(48)
+      696574662D68747470732D6E6F7469662D7472616E73706F72743A72656365697665722D6361706162696C6974696573 # "ietf-https-notif-transport:receiver-capabilities"
    A1                                   # map(1)
       73                                # text(19)
          72656365697665722D6361706162696C697479 # "receiver-capability"
@@ -1382,7 +1382,7 @@ A1                                      # map(1)
 <div class="alignLeft art-text artwork" id="section-3.2.2-3">
 <pre>
    {
-   "receiver-capabilities": {
+   "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
        "urn:ietf:params:yang-notif:https-capability:encoding:json",
        "urn:ietf:params:yang-notif:https-capability:encoding:xml"
@@ -1395,8 +1395,8 @@ A1                                      # map(1)
 <div class="alignLeft art-text artwork" id="section-3.2.2-5">
 <pre>
 A1                                      # map(1)
-   75                                   # text(21)
-      72656365697665722D6361706162696C6974696573 # "receiver-capabilities"
+   78 30                                # text(48)
+      696574662D68747470732D6E6F7469662D7472616E73706F72743A72656365697665722D6361706162696C6974696573 # "ietf-https-notif-transport:receiver-capabilities"
    A1                                   # map(1)
       73                                # text(19)
          72656365697665722D6361706162696C697479 # "receiver-capability"
@@ -1416,7 +1416,7 @@ A1                                      # map(1)
    Cache-Control: no-cache
    Content-Type: application/yang-data+json
    {
-   "receiver-capabilities": {
+   "ietf-https-notif-transport:receiver-capabilities": {
      "receiver-capability": [
        "urn:ietf:params:yang-notif:https-capability:encoding:cbor"
         ]
@@ -1623,7 +1623,7 @@ This implementation provides a Python-based prototype of the mechanism defined i
 </li>
           <li class="normal" id="section-3.6-1.6">
             <p id="section-3.6-1.6.1"><em>Version Compatibility</em>:
-The implementation is based on  draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.<a href="#section-3.6-1.6.1" class="pilcrow">¶</a></p>
+The implementation is based on draft-ietf-netconf-https-notif-15 and draft-ietf-netconf-https-notif-cbor-00.<a href="#section-3.6-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.6-1.7">
             <p id="section-3.6-1.7.1"><em>Licensing</em>:
